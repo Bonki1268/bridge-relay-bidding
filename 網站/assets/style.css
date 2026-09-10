@@ -320,9 +320,9 @@ table.auctiontbl td.who{white-space:nowrap; color:var(--ink); font-weight:600}
 .article .table-scroll{overflow-x:auto; box-shadow:var(--shadow); margin:20px 0}
 .article .table-scroll table{margin:0; box-shadow:none}
 .article th{
-  background:var(--surface-2); text-align:left; font-family:var(--mono);
-  font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--ink-3);
-  padding:10px 14px; border-bottom:1px solid var(--rule); white-space:nowrap;
+  background:var(--surface-2); text-align:left; font-family:inherit;
+  font-size:inherit; font-weight:700; color:var(--ink);
+  padding:10px 14px; border-bottom:1px solid var(--rule);
 }
 .article td{padding:10px 14px; border-bottom:1px dashed var(--rule-soft); color:var(--ink-2); vertical-align:top}
 .article tr:last-child td{border-bottom:none}
