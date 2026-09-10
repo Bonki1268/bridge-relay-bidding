@@ -202,14 +202,96 @@ footer.site-footer{margin-top:56px; padding-top:20px; border-top:1px solid var(-
 .sheet-panel .table-scroll{
   overflow-x:auto; border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow);
 }
-table.xlsx-tbl{border-collapse:collapse; width:100%; font-size:13.5px; min-width:560px}
-table.xlsx-tbl td{
-  padding:9px 14px; border-bottom:1px solid var(--rule-soft); border-right:1px solid var(--rule-soft);
-  vertical-align:top; line-height:1.6;
+
+/* 前導說明區塊（標題／叫序脈絡／定義句） */
+.lead-block{margin-bottom:18px}
+.lead-title{font-family:var(--serif); font-size:17px; font-weight:700; margin-bottom:6px; color:var(--ink)}
+.lead-context{
+  font-family:var(--mono); font-size:12.5px; color:var(--ink-3); line-height:1.7; margin-bottom:6px;
 }
-table.xlsx-tbl tr:last-child td{border-bottom:none}
-table.xlsx-tbl td:last-child{border-right:none}
-table.xlsx-tbl td.banner{font-family:var(--serif); font-size:15px; padding:14px 16px}
+.lead-def{font-size:13.5px; color:var(--ink-2); line-height:1.75; margin-bottom:4px}
+
+/* 代號／分支徽章 */
+.code-badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:24px; height:22px; padding:0 6px; border-radius:4px;
+  background:var(--baize); color:#fff; font-family:var(--mono); font-size:12px; font-weight:700;
+  vertical-align:middle;
+}
+
+/* 叫序階梯表 */
+table.bidtbl{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px}
+table.bidtbl th{
+  background:var(--surface-2); font-family:var(--mono); font-size:10.5px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); text-align:left;
+  padding:10px 14px; border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+table.bidtbl td{padding:10px 14px; border-bottom:1px dashed var(--rule-soft); vertical-align:top; color:var(--ink-2); line-height:1.6}
+table.bidtbl tr:last-child td{border-bottom:none}
+table.bidtbl td.cell-muted{color:var(--ink-3); font-size:12.5px}
+table.bidtbl tr.subhead td{
+  background:var(--baize-soft); color:var(--baize); font-family:var(--mono);
+  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:9px 14px; border-bottom:1px solid var(--rule);
+}
+
+/* 跳轉連結（→ 表4「A分支」／見表 9） */
+.jump-link{
+  color:var(--baize); text-decoration:underline; text-decoration-color:var(--rule-soft);
+  text-underline-offset:2px; cursor:pointer; font-weight:600;
+}
+.jump-link:hover{text-decoration-color:var(--baize)}
+
+/* 合併分支表（如 F-J分支）：拆成獨立子區塊 */
+.branch-group{margin:0 0 28px}
+.branch-group:last-child{margin-bottom:0}
+.branch-head{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  background:var(--baize-soft); border-left:3px solid var(--baize);
+  padding:10px 14px; margin-bottom:10px;
+}
+.branch-head .ctx{font-family:var(--mono); font-size:12.5px; color:var(--ink-2); line-height:1.6}
+
+/* 說明頁：定義列表 */
+.deftable{width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:4px}
+.deftable td{padding:9px 0; border-bottom:1px dashed var(--rule-soft); vertical-align:top}
+.deftable td:first-child{font-weight:700; color:var(--ink); width:150px; padding-right:16px; white-space:nowrap}
+.deftable td:last-child{color:var(--ink-2); line-height:1.75}
+.deftable tr:last-child td{border-bottom:none}
+.deftable-sub{
+  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--baize); margin:24px 0 10px; padding-top:16px; border-top:1px solid var(--rule);
+}
+
+/* 示例牌張／示例叫序：卡片 */
+.example-card{
+  border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow);
+  margin-bottom:20px; overflow:hidden;
+}
+.example-head{
+  display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline;
+  padding:12px 18px; background:var(--surface-2); border-bottom:1px solid var(--rule);
+  font-size:13px; color:var(--ink-2);
+}
+.example-head b{color:var(--ink); font-family:var(--serif); font-size:15px}
+.example-body{padding:16px 18px}
+table.handtbl{width:100%; border-collapse:collapse; font-size:13.5px; margin-bottom:12px; min-width:420px}
+table.handtbl td{padding:6px 14px 6px 0; vertical-align:top}
+table.handtbl td.seat{font-weight:700; color:var(--ink); white-space:nowrap; width:90px}
+table.handtbl td.suit{font-family:var(--mono); white-space:nowrap}
+.example-result{font-size:13.5px; color:var(--ink-2); line-height:1.75}
+.example-result .bid-lead{margin-right:8px; font-weight:700}
+
+table.auctiontbl{width:100%; border-collapse:collapse; font-size:13.5px; min-width:480px}
+table.auctiontbl th{
+  background:var(--surface-2); font-family:var(--mono); font-size:10.5px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); text-align:left;
+  padding:9px 14px; border-bottom:1px solid var(--rule);
+}
+table.auctiontbl td{padding:8px 14px; border-bottom:1px dashed var(--rule-soft); vertical-align:baseline; color:var(--ink-2)}
+table.auctiontbl tr:last-child td{border-bottom:none}
+table.auctiontbl td.seq{font-family:var(--mono); color:var(--ink-3); width:28px}
+table.auctiontbl td.who{white-space:nowrap; color:var(--ink); font-weight:600}
 
 /* ============ 原始書籍檔案：文章排版 ============ */
 .article{max-width:74ch}

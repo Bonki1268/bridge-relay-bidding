@@ -144,103 +144,369 @@ def write_file(path, content):
 
 # --------------------------------------------------------------------------
 # xlsx -> HTML（叫序資料）
+#
+# 每個工作表先被 analyze_sheet() 拆成「前導說明列／表頭／資料列／註腳」，
+# 再依表頭形狀分派給對應的語意化 renderer（沿用網站既有的排版元件，
+# 不再輸出 Excel 原始底色）。資料列中形如「→ 表4「A分支」」「見表 9」的
+# 文字，會被 linkify_refs() 轉成可點擊的分頁跳轉連結。
 # --------------------------------------------------------------------------
 
-def argb_to_hex(argb):
-    if not argb or len(argb) < 6:
-        return None
-    rgb = argb[-6:]
-    if rgb.upper() == "000000" and len(argb) == 8 and argb.startswith("00"):
-        # 00 開頭且顏色為全黑，openpyxl 對「無填色」也會回報這個值，視為無填色
-        return None
-    return "#" + rgb
+HEADER_NAVY = "1F3864"
 
 
-def cell_style(cell, is_header_zone):
-    styles = []
-    classes = []
-    font = cell.font
+def is_header_style(cell):
+    """判斷這個儲存格是否具備原始表格「表頭列」的樣式（粗體＋深藍底），
+    用來定位表頭列，以及「說明」表中重複出現的小節分隔列。"""
+    if not (cell.font and cell.font.bold):
+        return False
     fill = cell.fill
-
-    bg = None
-    if fill and fill.fgColor and fill.fill_type == "solid":
-        fg = fill.fgColor
-        if fg.type == "rgb":
-            bg = argb_to_hex(fg.rgb)
-    if bg:
-        styles.append("background:%s" % bg)
-
-    color = None
-    if font and font.color:
-        fc = font.color
-        if fc.type == "rgb" and fc.rgb:
-            color = argb_to_hex(fc.rgb)
-        elif fc.type == "theme" and fc.theme == 1:
-            color = "#FFFFFF"
-    if color:
-        styles.append("color:%s" % color)
-
-    if font and font.bold:
-        styles.append("font-weight:700")
-
-    align = cell.alignment.horizontal if cell.alignment else None
-    if align in ("center",):
-        styles.append("text-align:center")
-    elif align in ("right",):
-        styles.append("text-align:right")
-
-    return styles
+    if not (fill and fill.fill_type == "solid" and fill.fgColor):
+        return False
+    fg = fill.fgColor
+    if fg.type != "rgb" or not fg.rgb:
+        return False
+    return fg.rgb[-6:].upper() == HEADER_NAVY
 
 
-def sheet_to_html(ws):
-    merged = {}
-    covered = set()
-    for rng in ws.merged_cells.ranges:
-        min_col, min_row, max_col, max_row = rng.bounds
-        merged[(min_row, min_col)] = (max_row - min_row + 1, max_col - min_col + 1)
-        for r in range(min_row, max_row + 1):
-            for c in range(min_col, max_col + 1):
-                if (r, c) != (min_row, min_col):
-                    covered.add((r, c))
+def cell_text(ws, r, c):
+    v = ws.cell(row=r, column=c).value
+    if v is None:
+        return ""
+    v = str(v)
+    if v.startswith("'"):
+        # Excel「強制文字」前綴的殘留單引號，不是內容的一部分
+        v = v[1:]
+    return v
 
-    rows_html = []
+
+def analyze_sheet(ws):
     max_col = ws.max_column
-    for row in ws.iter_rows(min_row=1, max_row=ws.max_row):
-        cells_html = []
-        any_content = False
-        for cell in row:
-            r, c = cell.row, cell.column
-            if (r, c) in covered:
-                continue
-            value = cell.value
-            text = "" if value is None else str(value)
-            if text.strip():
-                any_content = True
-            span = merged.get((r, c))
-            attrs = []
-            if span:
-                rowspan, colspan = span
-                if rowspan > 1:
-                    attrs.append('rowspan="%d"' % rowspan)
-                if colspan > 1:
-                    attrs.append('colspan="%d"' % colspan)
-            styles = cell_style(cell, is_header_zone=(r == 1))
-            css_class = "banner" if (span and span[1] >= max_col and max_col > 1) else ""
-            style_attr = (' style="%s"' % ";".join(styles)) if styles else ""
-            class_attr = (' class="%s"' % css_class) if css_class else ""
-            content = suit_colorize(text) if text else "&nbsp;"
-            cells_html.append("<td%s%s%s>%s</td>" % (class_attr, style_attr, " ".join([""] + attrs), content))
-        if not any_content:
-            continue
-        rows_html.append("<tr>%s</tr>" % "".join(cells_html))
+    max_row = ws.max_row
 
-    return '<div class="table-scroll"><table class="xlsx-tbl"><tbody>%s</tbody></table></div>' % "".join(rows_html)
+    header_row = None
+    for r in range(1, max_row + 1):
+        if is_header_style(ws.cell(row=r, column=1)):
+            header_row = r
+            break
+    if header_row is None:
+        header_row = 1
+
+    leading = [cell_text(ws, r, 1).strip() for r in range(1, header_row)]
+    leading = [t for t in leading if t]
+
+    header = [cell_text(ws, header_row, c).strip() for c in range(1, max_col + 1)]
+    while header and header[-1] == "":
+        header.pop()
+
+    rows = []
+    for r in range(header_row + 1, max_row + 1):
+        vals = [cell_text(ws, r, c) for c in range(1, max_col + 1)]
+        if not any(v.strip() for v in vals):
+            continue
+        if is_header_style(ws.cell(row=r, column=1)):
+            rows.append(("SUB", vals[0].strip()))
+            continue
+        rows.append(("DATA", vals))
+
+    footnotes = []
+    while rows and rows[-1][0] == "DATA":
+        vals = rows[-1][1]
+        nonempty = [i for i, v in enumerate(vals) if v.strip()]
+        if nonempty == [0]:
+            footnotes.insert(0, vals[0].strip())
+            rows.pop()
+        else:
+            break
+
+    return dict(leading=leading, header=header, rows=rows, footnotes=footnotes, max_col=max_col)
+
+
+BID_TOKEN_RE = re.compile(r'(\d)(<span class="s [rb]">[♠♥♦♣]</span>|NT)')
+
+
+def bidify(html_text):
+    return BID_TOKEN_RE.sub(lambda m: '<span class="bid">%s</span>' % m.group(0), html_text)
+
+
+BRANCH_CODE_RE = re.compile(r"^([A-Za-z])(?:[\s　]|$)")
+
+
+def extract_branch_code(raw):
+    if not raw:
+        return None
+    m = BRANCH_CODE_RE.match(raw.strip())
+    return m.group(1) if m else None
+
+
+REF_RE = re.compile(r"表\s*(\d+(?:[、,]\s*\d+)*)(?:「([^」]*)」)?")
+
+
+def linkify_refs(raw, num_to_index, merged_indices, current_code):
+    """把「→ 表4「A分支」」「見表 9」「見表 3、4」這類文字轉成可點擊的分頁跳轉連結。"""
+
+    def repl(m):
+        nums_str, label = m.group(1), m.group(2)
+        nums = re.split(r"[、,]\s*", nums_str)
+        links = []
+        for ns in nums:
+            idx = num_to_index.get(int(ns))
+            if idx is None:
+                links.append(ns)
+                continue
+            dom = "sheet-%d" % (idx + 1)
+            attrs = 'class="jump-link" data-sheet="%s"' % dom
+            if idx in merged_indices and current_code:
+                attrs += ' data-anchor="branch-%d-%s"' % (idx + 1, current_code)
+            links.append("<a %s>%s</a>" % (attrs, ns))
+        suffix = ("「%s」" % label) if label else ""
+        return "表" + "、".join(links) + suffix
+
+    return REF_RE.sub(repl, raw)
+
+
+def render_cell(raw, num_to_index, merged_indices, current_code=None):
+    """統一的儲存格內容渲染：跳轉連結 → 花色上色／逃逸 → 叫品 mono 樣式。"""
+    if raw is None:
+        raw = ""
+    linked = linkify_refs(raw, num_to_index, merged_indices, current_code)
+    parts = re.split(r"(<[^>]+>)", linked)
+    out = []
+    for part in parts:
+        if part.startswith("<"):
+            out.append(part)
+            continue
+        seg = suit_colorize(part)
+        seg = bidify(seg)
+        out.append(seg)
+    return "".join(out)
+
+
+def render_lead_block(leading, num_to_index, merged_indices):
+    if not leading:
+        return ""
+    parts = ['<div class="lead-block">']
+    parts.append('<div class="lead-title">%s</div>' %
+                  render_cell(leading[0], num_to_index, merged_indices))
+    if len(leading) > 1:
+        parts.append('<div class="lead-context">%s</div>' %
+                      render_cell(leading[1], num_to_index, merged_indices))
+    for extra in leading[2:]:
+        parts.append('<div class="lead-def">%s</div>' %
+                      render_cell(extra, num_to_index, merged_indices))
+    parts.append("</div>")
+    return "".join(parts)
+
+
+def render_footnotes(footnotes, num_to_index, merged_indices):
+    if not footnotes:
+        return ""
+    lines = [render_cell(f, num_to_index, merged_indices) for f in footnotes]
+    return '<div class="trap">%s</div>' % "<br>".join(lines)
+
+
+def render_ladder(analysis, num_to_index, merged_indices):
+    header = analysis["header"]
+    n = len(header)
+    code_col = bool(header) and header[0] == "代號"
+
+    parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
+    ths = "".join("<th>%s</th>" % html.escape(h) for h in header)
+    trs = []
+    for kind, payload in analysis["rows"]:
+        if kind == "SUB":
+            trs.append('<tr class="subhead"><td colspan="%d">%s</td></tr>' %
+                        (n, render_cell(payload, num_to_index, merged_indices)))
+            continue
+        vals = (payload + [""] * n)[:n]
+        current_code = extract_branch_code(vals[0])
+        tds = []
+        for ci, raw in enumerate(vals):
+            if ci == 0 and code_col:
+                content = ('<span class="code-badge">%s</span>' % html.escape(raw.strip())
+                            if raw.strip() else "&nbsp;")
+            elif ci == 0 and current_code and len(raw.strip()) > 1:
+                rest = raw.strip()[1:].strip()
+                content = '<span class="code-badge">%s</span> %s' % (
+                    html.escape(current_code), render_cell(rest, num_to_index, merged_indices, current_code))
+            else:
+                content = render_cell(raw, num_to_index, merged_indices, current_code)
+            if not content:
+                content = "&nbsp;"
+            cls = ' class="cell-muted"' if ci == n - 1 else ""
+            tds.append("<td%s>%s</td>" % (cls, content))
+        trs.append("<tr>%s</tr>" % "".join(tds))
+
+    parts.append('<div class="table-scroll"><table class="bidtbl"><thead><tr>%s</tr></thead>'
+                  '<tbody>%s</tbody></table></div>' % (ths, "".join(trs)))
+    parts.append(render_footnotes(analysis["footnotes"], num_to_index, merged_indices))
+    return "".join(parts)
+
+
+def render_merged_branch(analysis, sheet_index, num_to_index, merged_indices):
+    header = analysis["header"]
+    inner_headers = header[2:]
+
+    groups = []
+    for kind, payload in analysis["rows"]:
+        if kind == "SUB":
+            continue
+        vals = (payload + [""] * len(header))[:len(header)]
+        code = vals[0].strip()
+        context = vals[1]
+        rest = vals[2:]
+        if not groups or groups[-1][0] != code:
+            groups.append([code, context, [rest]])
+        else:
+            groups[-1][2].append(rest)
+
+    parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
+    for code, context, rows in groups:
+        anchor_id = "branch-%d-%s" % (sheet_index + 1, code)
+        parts.append('<div class="branch-group" id="%s">' % anchor_id)
+        parts.append('<div class="branch-head"><span class="code-badge">%s</span><span class="ctx">%s</span></div>' %
+                      (html.escape(code), render_cell(context, num_to_index, merged_indices)))
+        ths = "".join("<th>%s</th>" % html.escape(h) for h in inner_headers)
+        trs = []
+        for rvals in rows:
+            tds = []
+            for ci, raw in enumerate(rvals):
+                content = render_cell(raw, num_to_index, merged_indices, code) or "&nbsp;"
+                cls = ' class="cell-muted"' if ci == len(rvals) - 1 else ""
+                tds.append("<td%s>%s</td>" % (cls, content))
+            trs.append("<tr>%s</tr>" % "".join(tds))
+        parts.append('<div class="table-scroll"><table class="bidtbl"><thead><tr>%s</tr></thead>'
+                      '<tbody>%s</tbody></table></div>' % (ths, "".join(trs)))
+        parts.append("</div>")
+
+    parts.append(render_footnotes(analysis["footnotes"], num_to_index, merged_indices))
+    return "".join(parts)
+
+
+def render_info(analysis, num_to_index, merged_indices):
+    parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
+    parts.append('<table class="deftable"><tbody>')
+    for kind, payload in analysis["rows"]:
+        if kind == "SUB":
+            parts.append('</tbody></table><div class="deftable-sub">%s</div><table class="deftable"><tbody>' %
+                          html.escape(payload))
+            continue
+        vals = (payload + ["", ""])[:2]
+        label = render_cell(vals[0], num_to_index, merged_indices)
+        desc = render_cell(vals[1], num_to_index, merged_indices)
+        parts.append("<tr><td>%s</td><td>%s</td></tr>" % (label, desc))
+    parts.append("</tbody></table>")
+    parts.append(render_footnotes(analysis["footnotes"], num_to_index, merged_indices))
+    return "".join(parts)
+
+
+def render_hands(analysis, num_to_index, merged_indices):
+    parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
+    groups = []
+    for kind, payload in analysis["rows"]:
+        if kind == "SUB":
+            continue
+        vals = (payload + [""] * 10)[:10]
+        exno = vals[0].strip()
+        if not groups or groups[-1][0] != exno:
+            groups.append([exno, []])
+        groups[-1][1].append(vals)
+
+    for exno, rows in groups:
+        first = rows[0]
+        source, situation = first[1], first[2]
+        contract = next((r[8] for r in rows if r[8].strip()), "")
+        comment = next((r[9] for r in rows if r[9].strip()), "")
+        parts.append('<div class="example-card">')
+        parts.append('<div class="example-head"><b>%s</b><span>%s</span><span>%s</span></div>' %
+                      (html.escape(exno), render_cell(source, num_to_index, merged_indices),
+                       render_cell(situation, num_to_index, merged_indices)))
+        parts.append('<div class="example-body"><div class="table-scroll"><table class="handtbl"><tbody>')
+        for r in rows:
+            seat, sp, he, di, cl = r[3], r[4], r[5], r[6], r[7]
+            parts.append(
+                '<tr><td class="seat">%s</td>'
+                '<td class="suit"><span class="s b">♠</span>%s</td>'
+                '<td class="suit"><span class="s r">♥</span>%s</td>'
+                '<td class="suit"><span class="s r">♦</span>%s</td>'
+                '<td class="suit"><span class="s b">♣</span>%s</td></tr>' %
+                (render_cell(seat, num_to_index, merged_indices),
+                 render_cell(sp, num_to_index, merged_indices),
+                 render_cell(he, num_to_index, merged_indices),
+                 render_cell(di, num_to_index, merged_indices),
+                 render_cell(cl, num_to_index, merged_indices)))
+        parts.append("</tbody></table></div>")
+        if contract.strip() or comment.strip():
+            parts.append('<div class="example-result">')
+            if contract.strip():
+                parts.append('<span class="bid-lead">%s</span>' % render_cell(contract, num_to_index, merged_indices))
+            if comment.strip():
+                parts.append(render_cell(comment, num_to_index, merged_indices))
+            parts.append("</div>")
+        parts.append("</div></div>")
+
+    parts.append(render_footnotes(analysis["footnotes"], num_to_index, merged_indices))
+    return "".join(parts)
+
+
+def render_auction(analysis, num_to_index, merged_indices):
+    parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
+    groups = []
+    for kind, payload in analysis["rows"]:
+        if kind == "SUB":
+            continue
+        vals = (payload + [""] * 6)[:6]
+        exno = vals[0].strip()
+        # 只有每個例子的第一列才有「例號」；後續列的例號欄位是空的，仍屬於同一組
+        if exno and (not groups or groups[-1][0] != exno):
+            groups.append([exno, vals[1], []])
+        if not groups:
+            groups.append(["", vals[1], []])
+        groups[-1][2].append(vals[2:])
+
+    for exno, situation, rows in groups:
+        parts.append('<div class="example-card">')
+        parts.append('<div class="example-head"><b>%s</b><span>%s</span></div>' %
+                      (html.escape(exno), render_cell(situation, num_to_index, merged_indices)))
+        parts.append('<div class="example-body"><div class="table-scroll"><table class="auctiontbl"><thead>'
+                      '<tr><th>序</th><th>叫者</th><th>叫品</th><th>說明</th></tr></thead><tbody>')
+        for seq, who, bid, note in rows:
+            note_html = render_cell(note, num_to_index, merged_indices) if note.strip() else ""
+            parts.append(
+                '<tr><td class="seq">%s</td><td class="who">%s</td>'
+                '<td>%s</td><td>%s</td></tr>' %
+                (html.escape(seq.strip()), render_cell(who, num_to_index, merged_indices),
+                 render_cell(bid, num_to_index, merged_indices), note_html))
+        parts.append("</tbody></table></div></div></div>")
+
+    parts.append(render_footnotes(analysis["footnotes"], num_to_index, merged_indices))
+    return "".join(parts)
+
+
+def render_sheet_panel(analysis, sheet_index, num_to_index, merged_indices):
+    header = tuple(analysis["header"])
+    if header[:2] == ("項目", "內容"):
+        return render_info(analysis, num_to_index, merged_indices)
+    if header[:2] == ("分支", "序列／前提"):
+        return render_merged_branch(analysis, sheet_index, num_to_index, merged_indices)
+    if header[:1] == ("例號",) and "方位" in header:
+        return render_hands(analysis, num_to_index, merged_indices)
+    if header[:1] == ("例號",) and "叫者" in header:
+        return render_auction(analysis, num_to_index, merged_indices)
+    return render_ladder(analysis, num_to_index, merged_indices)
 
 
 def build_xlsx_page(xlsx_name, title, eyebrow, lede):
     path = os.path.join(SRC, xlsx_name)
     wb = openpyxl.load_workbook(path, data_only=True)
     sheets = wb.worksheets
+
+    analyses = [analyze_sheet(ws) for ws in sheets]
+    num_to_index = {}
+    for i, ws in enumerate(sheets):
+        m = re.match(r"^(\d+)\.", ws.title)
+        if m:
+            num_to_index[int(m.group(1))] = i
+    merged_indices = {i for i, a in enumerate(analyses) if tuple(a["header"][:2]) == ("分支", "序列／前提")}
 
     tabs = []
     panels = []
@@ -249,8 +515,8 @@ def build_xlsx_page(xlsx_name, title, eyebrow, lede):
         active = " is-active" if i == 0 else ""
         tabs.append('<button class="sheet-tab%s" data-target="%s">%s</button>' %
                      (active, sid, html.escape(ws.title)))
-        panels.append('<div class="sheet-panel%s" id="%s">%s</div>' %
-                       (active, sid, sheet_to_html(ws)))
+        content = render_sheet_panel(analyses[i], i, num_to_index, merged_indices)
+        panels.append('<div class="sheet-panel%s" id="%s">%s</div>' % (active, sid, content))
 
     body = page_head(
         eyebrow, title,

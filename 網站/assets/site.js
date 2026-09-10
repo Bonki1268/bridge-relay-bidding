@@ -43,4 +43,22 @@
       });
     });
   });
+
+  // 叫序資料頁：分支跳轉連結（切換到目標分頁籤，並捲動到對應分支）
+  document.addEventListener("click", function(e){
+    var link = e.target.closest(".jump-link");
+    if (!link) return;
+    e.preventDefault();
+    var sheetId = link.getAttribute("data-sheet");
+    var anchorId = link.getAttribute("data-anchor");
+    if (!sheetId) return;
+    var tabBtn = document.querySelector('.sheet-tab[data-target="' + sheetId + '"]');
+    if (tabBtn) tabBtn.click();
+    var targetEl = document.getElementById(anchorId || sheetId);
+    if (targetEl) {
+      window.requestAnimationFrame(function(){
+        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  });
 })();
