@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{color-scheme:light dark}
+  html,body{margin:0}
+  body{font:14px system-ui,-apple-system,sans-serif;background:#fff}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>北歐接力工具速查</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+  :root{
+    --ground:#F6F8F4; --surface:#FFFFFF; --surface-2:#EDF1EA;
+    --ink:#17211C; --ink-2:#4A5852; --ink-3:#7C8A83;
+    --rule:#D9E0D7; --rule-soft:#E7EDE5;
+    --baize:#1F5B45; --baize-soft:#E3EFE8;
+    --red:#B92B31; --brass:#9C7220; --brass-soft:#F4EBD6;
+    --shadow:0 1px 2px rgba(23,33,28,.06), 0 8px 24px -14px rgba(23,33,28,.28);
+    --serif:"Noto Serif TC", Georgia, "Songti TC", serif;
+    --sans:"Noto Sans TC", -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#0E1512; --surface:#17201C; --surface-2:#1D2823;
+      --ink:#E9EFEA; --ink-2:#AAB9B1; --ink-3:#7B8B83;
+      --rule:#2B3931; --rule-soft:#222E28;
+      --baize:#6CBB9B; --baize-soft:#17281F;
+      --red:#F0868A; --brass:#D9A64A; --brass-soft:#241D10;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1512; --surface:#17201C; --surface-2:#1D2823;
+    --ink:#E9EFEA; --ink-2:#AAB9B1; --ink-3:#7B8B83;
+    --rule:#2B3931; --rule-soft:#222E28;
+    --baize:#6CBB9B; --baize-soft:#17281F;
+    --red:#F0868A; --brass:#D9A64A; --brass-soft:#241D10;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding-inline:20px; padding-block:0 72px}
+
+  h1,h2,h3{font-family:var(--serif); text-wrap:balance; margin:0}
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--baize);
+  }
+  p{margin:0}
+  a{color:var(--baize)}
+
+  .s{font-family:var(--mono); font-weight:700}
+  .r{color:var(--red)}
+  .b{color:var(--ink)}
+  .bid{
+    font-family:var(--mono); font-weight:700; font-size:.95em;
+    font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+
+  header{border-bottom:2px solid var(--ink); padding-block:44px 22px; margin-bottom:38px}
+  .mast{display:flex; flex-wrap:wrap; gap:20px 28px; align-items:flex-end; justify-content:space-between}
+  h1{font-size:clamp(30px,5.4vw,44px); line-height:1.2; letter-spacing:.01em}
+  .mast-meta{font-size:12.5px; color:var(--ink-3); line-height:1.7; text-align:right; font-family:var(--mono)}
+  .lede{margin-top:20px; max-width:62ch; color:var(--ink-2); font-size:16px}
+  .lede strong{color:var(--ink); font-weight:700}
+
+  .mech{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--rule); border:1px solid var(--rule); margin-bottom:52px;
+  }
+  .mech > div{background:var(--surface); padding:20px 22px}
+  .mech .n{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--brass); letter-spacing:.14em}
+  .mech h3{font-size:16px; margin:6px 0 6px}
+  .mech p{font-size:13.5px; color:var(--ink-2); line-height:1.7}
+
+  section{margin-bottom:52px}
+  .sec-head{
+    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+    border-bottom:1px solid var(--ink); padding-bottom:10px; margin-bottom:26px;
+  }
+  .sec-head h2{font-size:24px}
+  .sec-head .tag{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); margin-left:auto; letter-spacing:.04em}
+
+  /* hard rules */
+  .rules{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+  @media (max-width:700px){ .rules{grid-template-columns:1fr} }
+  .rule{background:var(--surface); border:1px solid var(--rule); padding:16px 18px; box-shadow:var(--shadow)}
+  .rule .k{font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--brass)}
+  .rule h4{font-family:var(--serif); font-size:16.5px; margin:5px 0 8px; font-weight:700}
+  .rule p{font-size:13.5px; color:var(--ink-2); line-height:1.7}
+
+  .tool{background:var(--surface); border:1px solid var(--rule); box-shadow:var(--shadow); margin-bottom:26px}
+  .tool-top{
+    display:flex; flex-wrap:wrap; gap:6px 18px; align-items:baseline;
+    padding:20px 24px 16px; border-bottom:1px solid var(--rule-soft);
+  }
+  .tool-top h3{font-size:21px; letter-spacing:.01em}
+  .tool-top .zh{font-size:13.5px; color:var(--ink-3)}
+  .tool-body{padding:20px 24px 24px}
+  .grid2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px}
+  @media (max-width:760px){ .grid2{grid-template-columns:1fr; gap:22px} .mech{grid-template-columns:1fr} }
+
+  dl.facts{margin:0 0 20px; display:grid; grid-template-columns:auto minmax(0,1fr); gap:9px 16px; align-items:baseline}
+  dl.facts dt{
+    font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.1em;
+    color:var(--baize); text-transform:uppercase; white-space:nowrap;
+  }
+  dl.facts dd{margin:0; font-size:14px; color:var(--ink-2); line-height:1.7}
+  dl.facts dd strong{color:var(--ink); font-weight:700}
+
+  .ladder-wrap{min-width:0}
+  .ladder-cap{
+    display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .ladder-cap .dir{color:var(--brass); letter-spacing:.06em}
+  .ladder{list-style:none; margin:0; padding:0 0 0 2px; border-left:2px solid var(--rule); overflow-x:auto}
+  .ladder li{
+    display:grid; grid-template-columns:30px minmax(0,1fr);
+    gap:12px; align-items:baseline; padding:7px 0 7px 14px; position:relative;
+  }
+  .ladder.withbid li{grid-template-columns:30px 62px minmax(0,1fr)}
+  .ladder li + li{border-top:1px dashed var(--rule-soft)}
+  .ladder li::before{content:""; position:absolute; left:-2px; top:15px; width:9px; height:2px; background:var(--brass)}
+  .ladder .lv{font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--ink-3); font-variant-numeric:tabular-nums}
+  .ladder .bd{font-family:var(--mono); font-weight:700; font-size:14.5px; white-space:nowrap}
+  .ladder .mn{font-size:13.5px; color:var(--ink-2); line-height:1.6}
+  .ladder .mn em{font-style:normal; color:var(--ink-3); font-size:12.5px}
+  .ladder .mn b{color:var(--ink)}
+
+  .maptbl{width:100%; border-collapse:collapse; font-size:13.5px}
+  .maptbl th{
+    font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-3); text-align:left;
+    padding:0 10px 8px 0; border-bottom:1px solid var(--rule);
+  }
+  .maptbl td{padding:7px 10px 7px 0; border-bottom:1px dashed var(--rule-soft); vertical-align:baseline}
+  .maptbl td:first-child, .maptbl td:nth-child(2){font-family:var(--mono); font-weight:700; white-space:nowrap}
+  .maptbl td:nth-child(2){color:var(--baize)}
+  .maptbl .note{color:var(--ink-3); font-size:12.5px; font-family:var(--sans); font-weight:400; white-space:normal}
+
+  .trap{
+    background:var(--brass-soft); border-left:3px solid var(--brass);
+    padding:14px 18px; font-size:13.5px; line-height:1.75; color:var(--ink-2); margin-top:20px;
+  }
+  .trap b{color:var(--ink); font-family:var(--sans)}
+  .proof{
+    border-left:3px solid var(--baize); background:var(--baize-soft);
+    padding:14px 18px; font-size:13.5px; line-height:1.75; color:var(--ink-2); margin-top:20px;
+  }
+  .proof b{color:var(--ink)}
+
+  .crash{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px}
+  @media (max-width:700px){ .crash{grid-template-columns:1fr} }
+  .cbox{border:1px solid var(--rule); background:var(--surface); padding:16px 18px}
+  .cbox .k{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--baize)}
+  .cbox .k b{color:var(--ink); font-size:15px; letter-spacing:0}
+  .cbox h4{font-family:var(--serif); font-size:17px; margin:4px 0 12px; font-weight:700}
+  .pair{display:flex; align-items:baseline; gap:10px; padding:6px 0; border-top:1px dashed var(--rule-soft); font-size:13px; color:var(--ink-2)}
+  .pair .glyphs{font-family:var(--mono); font-size:19px; font-weight:700; letter-spacing:.04em}
+
+  .auction{border:1px solid var(--rule); background:var(--surface); box-shadow:var(--shadow); overflow-x:auto}
+  .auction table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:520px}
+  .auction th{
+    background:var(--surface-2); font-family:var(--mono); font-size:10.5px; font-weight:700;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3);
+    text-align:left; padding:11px 16px; border-bottom:1px solid var(--rule);
+  }
+  .auction td{padding:9px 16px; border-bottom:1px dashed var(--rule-soft); vertical-align:baseline}
+  .auction tr:last-child td{border-bottom:none}
+  .auction .bd{font-family:var(--mono); font-weight:700; font-size:15px; white-space:nowrap}
+  .auction .tool-lbl{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--baize); letter-spacing:.04em; white-space:nowrap}
+  .auction .say{color:var(--ink-2); font-size:13px; line-height:1.6}
+  .auction tr.mark td{background:var(--baize-soft)}
+  .hand{
+    padding:16px; border-top:1px solid var(--rule); background:var(--surface-2);
+    font-size:13px; color:var(--ink-2); display:flex; flex-wrap:wrap; gap:8px 28px;
+  }
+  .hand span{font-family:var(--mono); font-size:13.5px}
+
+  .gaps{border:1px dashed var(--rule); padding:22px 24px; background:var(--surface)}
+  .gaps ul{margin:12px 0 0; padding-left:20px; color:var(--ink-2); font-size:14px}
+  .gaps li{margin-bottom:6px}
+  .gaps li b{color:var(--ink)}
+
+  footer{margin-top:56px; padding-top:20px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink-3); line-height:1.8}
+  :focus-visible{outline:2px solid var(--baize); outline-offset:3px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="mast">
+      <div>
+        <div class="eyebrow">北歐接力精確體系 · 第三章 ＋ 第五章</div>
+        <h1>接力工具速查</h1>
+      </div>
+      <div class="mast-meta">
+        五種問叫工具<br>
+        正式階梯定義
+      </div>
+    </div>
+    <p class="lede">
+      接力體系裡，問的一方永遠叫<strong>最便宜的叫品</strong>——本身不帶任何牌型資訊，只是說「繼續描述」。
+      答的一方按<strong>約定好的固定階梯</strong>逐級回答。所以問的人不是聽懂同伴叫了什麼花色，而是<strong>數同伴跳了幾階</strong>。
+      以下階梯全部取自第三章的正式定義，並用第五章的實例驗證過。
+    </p>
+  </header>
+
+  <div class="mech">
+    <div>
+      <div class="n">步驟 01</div>
+      <h3>扳機</h3>
+      <p>應叫 <span class="bid">1NT</span> 逼局，接力進程開始。只有在建立逼叫進局形勢後才使用接力（<span class="bid">2<span class="s b">♣</span></span> 開叫是例外）。</p>
+    </div>
+    <div>
+      <div class="n">步驟 02</div>
+      <h3>問形狀</h3>
+      <p>Sidestep、Splinter、54Pick-up、Six-shooter 輪番上陣，直到 13 張牌的分佈完全確定。</p>
+    </div>
+    <div>
+      <div class="n">步驟 03</div>
+      <h3>問大牌</h3>
+      <p>形狀問完才進 CRASH，逐輪確認 A → K → Q。空間不夠時可隨時脫離接力。</p>
+    </div>
+  </div>
+
+  <!-- ============ 硬規則 ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>四條硬規則</h2>
+      <span class="tag">第三章 · 記錯就會叫錯定約</span>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="k">規則 · 接力花色怎麼認</div>
+        <h4>成局線以下 vs. 以上</h4>
+        <p>
+          <b>成局線以下</b>：接力花色永遠是同伴應叫花色<b>上一級</b>的花色（3NT 除外，它總是止叫）。<br>
+          <b>成局線以上</b>：應叫者保證<b>至少四張</b>的花色，一律是止叫；<b>不是</b>同伴四張套的最便宜花色、以及無將叫品，才是新的接力。搞錯這條，你想止叫時同伴會當成接力。
+        </p>
+      </div>
+      <div class="rule">
+        <div class="k">規則 · 問牌型的上限</div>
+        <h4><span class="bid">4<span class="s b">♠</span></span> 是問牌型接力的最高叫品</h4>
+        <p>
+          超過 <span class="bid">4<span class="s b">♠</span></span> 就不再是問牌型。所以
+          <span class="bid">2<span class="s b">♣</span></span>–<span class="bid">2<span class="s r">♦</span></span>–<span class="bid">4<span class="s b">♠</span></span> 之後的
+          <span class="bid">4NT</span> 是黑木，不是接力——這是少數幾個接力者問不出同伴確切牌型的序列之一。
+        </p>
+      </div>
+      <div class="rule">
+        <div class="k">規則 · 接力的天花板</div>
+        <h4><span class="bid">6<span class="s b">♠</span></span> 是最高級別的接力叫</h4>
+        <p>再高就沒有接力了。這條和上一條一起劃出接力能運作的空間：問牌型到 <span class="bid">4<span class="s b">♠</span></span>，問大牌到 <span class="bid">6<span class="s b">♠</span></span>。</p>
+      </div>
+      <div class="rule">
+        <div class="k">規則 · 誰有最後決定權</div>
+        <h4>詢問一方「確定」了定約，同伴無權再叫</h4>
+        <p>
+          接力者掌握的資訊比較完整，所以他選的定約就是最終定約。
+          例：<span class="bid">3NT</span>（3-6-2-2）之後同伴叫 <span class="bid">4<span class="s r">♥</span></span> 止叫，開叫者<b>不能再叫</b>。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1. Sidestep ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>1 · Sidestep</h2>
+      <span class="tag">問「剩下那兩門怎麼分」</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-top">
+        <h3>Sidestep</h3>
+        <span class="zh">側步接力 — 把已知的兩門擱著，補問剩下的兩門</span>
+      </div>
+      <div class="tool-body">
+        <dl class="facts">
+          <dt>何時用</dt>
+          <dd>開叫者已描述<strong>兩門主要花色的長度</strong>，還剩兩門未知。這是本體系<strong>最常用</strong>的接力。</dd>
+          <dt>叫什麼</dt>
+          <dd>最便宜的叫品。下一階是 <span class="bid">3NT</span> 時跳到 <span class="bid">4<span class="s b">♣</span></span>，因為 3NT 已被佔用。</dd>
+          <dt>怎麼讀</dt>
+          <dd>階梯全部寫成 <strong>（高）-（低）</strong>：「高」＝兩門未知花色中<strong>級別較高</strong>的那門，「低」＝較低的那門。不是花色名稱，是位置。</dd>
+        </dl>
+
+        <div class="trap" style="margin-top:0; margin-bottom:22px">
+          <b>一條規則貫穿全部四種情境：由平均排到極端；同樣極端程度時，「級別較高的那門比較短」排在前面。</b>
+          這就是為什麼 5-4 情境的第2級是 1（高）-3（低）而第3級才是 3（高）-1（低）。
+        </div>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>A · 已顯示 4-4 兩套</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">2（高）- 3（低）</span></li>
+              <li><span class="lv">加2級</span><span class="mn">3（高）- 2（低）</span></li>
+              <li><span class="lv">加3級</span><span class="mn">1（高）- 4（低）<br><em>＊很難用到，4441 通常另有表示方式</em></span></li>
+              <li><span class="lv">加4級</span><span class="mn">4（高）- 1（低）<br><em>＊同上</em></span></li>
+            </ul>
+
+            <div class="ladder-cap" style="margin-top:24px"><span>B · 已確切顯示 5-4 兩套</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">2 - 2</span></li>
+              <li><span class="lv">加2級</span><span class="mn">1（高）- 3（低）</span></li>
+              <li><span class="lv">加3級</span><span class="mn">3（高）- 1（低）</span></li>
+              <li><span class="lv">加4級</span><span class="mn">0（高）- 4（低）</span></li>
+              <li><span class="lv">加5級</span><span class="mn">4（高）- 0（低）</span></li>
+            </ul>
+          </div>
+
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>C · 兩套花色至少 10 張</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">1（高）- 2（低）</span></li>
+              <li><span class="lv">加2級</span><span class="mn">2（高）- 1（低）</span></li>
+              <li><span class="lv">加3級</span><span class="mn">0（高）- 3（低）</span></li>
+              <li><span class="lv">加4級</span><span class="mn">3（高）- 0（低）</span></li>
+              <li><span class="lv">加5級</span><span class="mn">1（高）- 1（低）</span></li>
+              <li><span class="lv">加6級</span><span class="mn">0（高）- 2（低）</span></li>
+              <li><span class="lv">加7級</span><span class="mn">2（高）- 0（低）</span></li>
+            </ul>
+            <div class="trap" style="margin-top:14px">
+              第5級以上<b>只有在兩門花色合計至少 11 張時</b>才用得到（前四級合計 3 張，後三級合計 2 張）。同伴是 7-4 還是 6-5，在更早的問叫就會知道。
+            </div>
+
+            <div class="ladder-cap" style="margin-top:24px"><span>D · 6322 單套，找 3 張套</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn"><b>最低級別</b>的花色是 3 張</span></li>
+              <li><span class="lv">加2級</span><span class="mn"><b>中間級別</b>的花色是 3 張</span></li>
+              <li><span class="lv">加3級</span><span class="mn"><b>最高級別</b>的花色是 3 張</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="proof">
+          <b>C 階梯的完整驗證：</b>
+          南 <span class="bid">1<span class="s b">♠</span></span> · 北 <span class="bid">1NT</span> · 南 <span class="bid">2NT</span>（6+<span class="s b">♠</span> ＋ 4張低花）· 北 <span class="bid">3<span class="s b">♣</span></span> · 南 <span class="bid">3<span class="s r">♦</span></span>（4張<span class="s b">♣</span>）· 北 <span class="bid">3<span class="s r">♥</span></span> Sidestep。
+          此時未知的兩門是 <span class="s r">♥</span>（高）和 <span class="s r">♦</span>（低），七個答叫依序是
+          6-1-2-4、6-2-1-4、6-0-3-4、6-3-0-4、7-1-1-4、7-0-2-4、7-2-0-4
+          —— 與階梯逐級對上，<b>七級全中</b>。
+        </div>
+
+        <div class="trap">
+          <b>問「哪一門」和問「怎麼分」是兩套排序：</b>
+          問<b>哪一門</b>（哪門是短套、哪門缺門、哪門是 4 張）一律<b>由低級到高級</b>；
+          問<b>怎麼分</b>（剩下兩門的長度組合）才用上面「由平均到極端」的排法。
+          第五章 <span class="bid">3<span class="s r">♦</span></span> 代表 4張<span class="s b">♣</span> 而不是 4張<span class="s r">♦</span>，正是前者——<span class="s b">♣</span> 級別比 <span class="s r">♦</span> 低，所以排第一級。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. Splinter ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>2 · Splinter</h2>
+      <span class="tag">問「短套在哪門」</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-top">
+        <h3>Splinter 接力</h3>
+        <span class="zh">階梯答出了數字、沒指明花色時，用它補問</span>
+      </div>
+      <div class="tool-body">
+        <dl class="facts">
+          <dt>何時用</dt>
+          <dd>應叫者已顯示 <strong>5332、6331、7321</strong> 牌型後，用來找出短套花色（<strong>不一定非要是單張</strong>）。</dd>
+          <dt>叫什麼</dt>
+          <dd>最便宜的叫品。</dd>
+          <dt>答什麼</dt>
+          <dd>三級，短套花色由低級到高級。</dd>
+        </dl>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>答叫階梯</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn"><b>最低級別</b>的花色是短套</span></li>
+              <li><span class="lv">加2級</span><span class="mn"><b>中間級別</b>的花色是短套</span></li>
+              <li><span class="lv">加3級</span><span class="mn"><b>最高級別</b>的花色是短套</span></li>
+            </ul>
+          </div>
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>實例 · 5332 帶 5張<span class="s b">♣</span></span></div>
+            <ul class="ladder withbid">
+              <li><span class="lv">加1級</span><span class="bd">3<span class="s r">♥</span></span><span class="mn">3-3-<b>2</b>-5 <em>（♦ 是雙張）</em></span></li>
+              <li><span class="lv">加2級</span><span class="bd">3<span class="s b">♠</span></span><span class="mn">3-<b>2</b>-3-5 <em>（♥ 是雙張）</em></span></li>
+              <li><span class="lv">加3級</span><span class="bd">3NT</span><span class="mn"><b>2</b>-3-3-5 <em>（♠ 是雙張）</em></span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="trap">
+          <b>唯一的例外序列：</b>應叫者顯示 <b>7321</b> 牌型並指明單張花色後，下一個接力<b>直接跳去問 A</b>，不再問剩下兩門是 2-3 還是 3-2。
+          原書的理由很直接：這種牌型下，知道大牌在哪比知道那兩門怎麼分更有價值。這是全書唯一一個「正常」的、不需要問出完整牌型的序列。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. 54Pick-up ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>3 · 54Pick-up</h2>
+      <span class="tag">撿起 5-4 牌型中那個「4」</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-top">
+        <h3>54Pick-up</h3>
+        <span class="zh">一問應付所有 5-4 牌型，拿到牌型的全部資訊</span>
+      </div>
+      <div class="tool-body">
+        <dl class="facts">
+          <dt>何時用</dt>
+          <dd>應叫者顯示<strong>至少 5-4 牌型</strong>後。</dd>
+          <dt>叫什麼</dt>
+          <dd>最便宜的叫品。</dd>
+          <dt>雙重含義</dt>
+          <dd>當同伴的叫品<strong>可能是 5332 也可能是 54</strong> 時，第 1 級答叫優先用來顯示 <strong>5332</strong>，其餘階梯順延。</dd>
+          <dt>牌力變寬時</dt>
+          <dd>若牌力範圍超過 4 個大牌點（例如 11–15），<strong>第 1 級固定用來表示低限</strong>，開叫者可以再接力一次問牌型，階梯照舊、只去掉低限那級。</dd>
+        </dl>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>正式答叫階梯</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">6-4 或 7-4</span></li>
+              <li><span class="lv">加2級</span><span class="mn">5-5</span></li>
+              <li><span class="lv">加3級</span><span class="mn">5-4-2-2</span></li>
+              <li><span class="lv">加4級</span><span class="mn">5-4-1-3</span></li>
+              <li><span class="lv">加5級</span><span class="mn">5-4-3-1</span></li>
+              <li><span class="lv">加6級</span><span class="mn">6-5</span></li>
+              <li><span class="lv">加7級</span><span class="mn">5-4-0-4</span></li>
+              <li><span class="lv">加8級</span><span class="mn">5-4-4-0</span></li>
+            </ul>
+          </div>
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>實例 · <span class="bid">1<span class="s b">♠</span></span>–<span class="bid">1NT</span>；<span class="bid">2<span class="s r">♥</span></span>–<span class="bid">2<span class="s b">♠</span></span></span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder withbid">
+              <li><span class="lv">第1級</span><span class="bd">2NT</span><span class="mn">5332 <em>（接下來 3♣ = Splinter）</em></span></li>
+              <li><span class="lv">第2級</span><span class="bd">3<span class="s b">♣</span></span><span class="mn">6+<span class="s b">♠</span> ＋ 4張<span class="s r">♥</span> <em>（3♦ = Sidestep）</em></span></li>
+              <li><span class="lv">第3級</span><span class="bd">3<span class="s r">♦</span></span><span class="mn">5<span class="s b">♠</span> ＋ 5<span class="s r">♥</span> <em>（3♥ = Sidestep）</em></span></li>
+              <li><span class="lv">第4級</span><span class="bd">3<span class="s r">♥</span></span><span class="mn">5-4-2-2</span></li>
+              <li><span class="lv">第5級</span><span class="bd">3<span class="s b">♠</span></span><span class="mn">5-4-1-3</span></li>
+              <li><span class="lv">第6級</span><span class="bd">3NT</span><span class="mn">5-4-3-1</span></li>
+              <li><span class="lv">第7級</span><span class="bd">4<span class="s b">♣</span></span><span class="mn">5-4-0-4</span></li>
+              <li><span class="lv">第8級</span><span class="bd">4<span class="s r">♦</span></span><span class="mn">5-4-4-0</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="trap">
+          <b>北歐梅花最難的地方就在這裡：階梯會依情境「塌縮」。</b>
+          當 5-5 或 6-5 已經被先前的叫牌排除，5422 就升到第 2 級、5404 升到第 5 級。
+          原書自己說了——使用者必須記清楚<b>在哪些序列中消掉了哪些不必要的級數</b>。第五章的 B/C 分支就是塌縮後的版本。
+        </div>
+
+        <div class="proof">
+          <b>第五章例7 驗證：</b>西 <span class="bid">2<span class="s r">♥</span></span> → 東 <span class="bid">2<span class="s b">♠</span></span> 54Pick-up → 西 <span class="bid">3NT</span>（第6級 ＝ 5-4-3-1）。
+          西家實際 <span class="s b">♠</span>K10965 <span class="s r">♥</span>AK87 <span class="s r">♦</span>J84 <span class="s b">♣</span>8 ＝ 5-4-3-1。一叫交代完 13 張。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. Six-shooter ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>4 · Six-shooter</h2>
+      <span class="tag">問清 6張以上單套牌的完整分佈</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-top">
+        <h3>Six-shooter 接力</h3>
+        <span class="zh">「六響左輪」— 一叫講完整個牌型</span>
+      </div>
+      <div class="tool-body">
+        <dl class="facts">
+          <dt>何時用</dt>
+          <dd>應叫者已顯示<strong>至少 6 張以上花色，且沒有 4 張以上邊花套</strong>。</dd>
+          <dt>叫什麼</dt>
+          <dd>最便宜的叫品（在 <span class="bid">1<span class="s b">♠</span></span>–<span class="bid">1NT</span>；<span class="bid">2<span class="s b">♠</span></span> 序列裡就是 <span class="bid">2NT</span>）。</dd>
+          <dt>3NT 的位置</dt>
+          <dd><strong>7-2-2-2 總是答叫 3NT</strong>，它插在階梯第 4 級和第 5 級之間，不佔正規級數。</dd>
+        </dl>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>正式答叫階梯</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">6-3-2-2</span></li>
+              <li><span class="lv">加2級</span><span class="mn">6-3-3-1</span></li>
+              <li><span class="lv">加3級</span><span class="mn">7-3-2-1</span></li>
+              <li><span class="lv">加4級</span><span class="mn">7-3-3-0，<b>最低級</b>花色是缺門</span></li>
+              <li><span class="lv">加5級</span><span class="mn">7-3-3-0，<b>中間級</b>花色是缺門</span></li>
+              <li><span class="lv">加6級</span><span class="mn">7-3-3-0，<b>最高級</b>花色是缺門</span></li>
+            </ul>
+          </div>
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>實例 · 6張以上<span class="s b">♠</span>，無四張邊花</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder withbid">
+              <li><span class="lv">加1級</span><span class="bd">3<span class="s b">♣</span></span><span class="mn">6-3-2-2 <em>— 需 Sidestep 補問 3 張套</em></span></li>
+              <li><span class="lv">加2級</span><span class="bd">3<span class="s r">♦</span></span><span class="mn">6-3-3-1 <em>— 需 Splinter 補問單張</em></span></li>
+              <li><span class="lv">加3級</span><span class="bd">3<span class="s r">♥</span></span><span class="mn">7-3-2-1 <em>— 補問後直接跳去問 A</em></span></li>
+              <li><span class="lv">加4級</span><span class="bd">3<span class="s b">♠</span></span><span class="mn">7-3-3-<b>0</b></span></li>
+              <li><span class="lv">插入</span><span class="bd">3NT</span><span class="mn">7-2-2-2</span></li>
+              <li><span class="lv">加5級</span><span class="bd">4<span class="s r">♦</span></span><span class="mn">7-3-<b>0</b>-3</span></li>
+              <li><span class="lv">加6級</span><span class="bd">4<span class="s r">♥</span></span><span class="mn">7-<b>0</b>-3-3</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. CRASH ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>5 · CRASH</h2>
+      <span class="tag">問 A、K、Q 的確切位置</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-top">
+        <h3>CRASH</h3>
+        <span class="zh">Colour-Rank-And-SHape — 牌型全部問完後，加 1 級就是問 A</span>
+      </div>
+      <div class="tool-body">
+        <p style="font-size:14px; color:var(--ink-2); margin-bottom:20px; max-width:66ch">
+          四門花色兩兩配對共 <strong>6 種組合</strong>，恰好分成三類、每類兩組。
+          答叫者說「我有兩個 A，屬於某一類」時只剩兩種可能——問的人往往靠自己手上的牌就能直接排除一組。
+        </p>
+
+        <div class="crash">
+          <div class="cbox">
+            <div class="k"><b>C</b>olour · 同色</div>
+            <h4>看顏色</h4>
+            <div class="pair"><span class="glyphs"><span class="b">♠</span><span class="b">♣</span></span><span>黑花色</span></div>
+            <div class="pair"><span class="glyphs"><span class="r">♥</span><span class="r">♦</span></span><span>紅花色</span></div>
+          </div>
+          <div class="cbox">
+            <div class="k"><b>R</b>ank · 同級</div>
+            <h4>看高低</h4>
+            <div class="pair"><span class="glyphs"><span class="b">♠</span><span class="r">♥</span></span><span>兩門高花</span></div>
+            <div class="pair"><span class="glyphs"><span class="r">♦</span><span class="b">♣</span></span><span>兩門低花</span></div>
+          </div>
+          <div class="cbox">
+            <div class="k"><b>SH</b>ape · 同形</div>
+            <h4>看圖形</h4>
+            <div class="pair"><span class="glyphs"><span class="r">♥</span><span class="b">♣</span></span><span>圓形</span></div>
+            <div class="pair"><span class="glyphs"><span class="r">♦</span><span class="b">♠</span></span><span>尖形</span></div>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>標準階梯 · 五級</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">0 或 3 個 A　<em>＊</em></span></li>
+              <li><span class="lv">加2級</span><span class="mn">1 或 4 個 A　<em>＊</em></span></li>
+              <li><span class="lv">加3級</span><span class="mn">2 個 A；<b>同色</b></span></li>
+              <li><span class="lv">加4級</span><span class="mn">2 個 A；<b>高花或低花</b></span></li>
+              <li><span class="lv">加5級</span><span class="mn">2 個 A；<span class="s b">♣</span>+<span class="s r">♥</span> 或 <span class="s r">♦</span>+<span class="s b">♠</span></span></li>
+            </ul>
+            <div class="trap" style="margin-top:14px">
+              <b>＊ 在 2、3、4 階上使用 CRASH 時，第 1 級和第 2 級互換。</b>
+              理由很實際：手上有<b>一個</b>大牌是最常見的答叫，讓它佔最便宜的那一級才省空間。
+            </div>
+          </div>
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>壓縮階梯 · <span class="bid">4NT</span> 及以上</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">0 或 3 個</span></li>
+              <li><span class="lv">加2級</span><span class="mn">1 或 4 個</span></li>
+              <li><span class="lv">加3級</span><span class="mn">2 個</span></li>
+            </ul>
+            <div class="trap" style="margin-top:14px">
+              空間不足時只答數量、不答類別。<b>問 K 和問 Q 用同一套階梯。</b>
+            </div>
+            <div class="proof" style="margin-top:14px">
+              <b>問完 A 之後，下一級接力問 K，再下一級問 Q</b>——同樣的方式一路往上。
+              第五章例2 就用三輪問完 <span class="s b">♠</span>A<span class="s r">♥</span>A、<span class="s r">♦</span>K、<span class="s b">♠</span>Q，叫到 7♠。
+            </div>
+          </div>
+        </div>
+
+        <div class="proof">
+          <b>三個實證（皆取自第五章）：</b><br>
+          <b>例2</b> — 西答「2個高花或低花的A」＝ Rank類。東有 <span class="s b">♣</span>A，排除低花組 → 西必是 <span class="s b">♠</span>A+<span class="s r">♥</span>A。實際 <span class="s b">♠</span>A108652 <span class="s r">♥</span>A54 <span class="s r">♦</span>— <span class="s b">♣</span>KQ104 ✓<br>
+          <b>例6</b> — 東答「兩個黑花色的A」＝ Colour 黑組。實際 <span class="s b">♠</span>AK632 <span class="s r">♥</span>Q85 <span class="s r">♦</span>— <span class="s b">♣</span>A10742 ✓<br>
+          <b>例7</b> — 西答「高花或低花兩K」＝ Rank類。實際 <span class="s b">♠</span>K10965 <span class="s r">♥</span>AK87… ✓
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 串起來 ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>串起來看</h2>
+      <span class="tag">第五章例1 · 世界叫牌競賽，660 對中列第四</span>
+    </div>
+
+    <div class="auction">
+      <table>
+        <thead>
+          <tr><th>西 Glenn</th><th>東 Ulf</th><th>工具</th><th>說了什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="bd">1<span class="s b">♠</span></td><td></td><td></td><td class="say">5張以上 ♠，11–15 點</td></tr>
+          <tr><td></td><td class="bd">1NT</td><td class="tool-lbl">扳機</td><td class="say">接力扳機，逼局</td></tr>
+          <tr><td class="bd">2<span class="s b">♣</span></td><td></td><td></td><td class="say">高限 14–15 點</td></tr>
+          <tr><td></td><td class="bd">2<span class="s r">♦</span></td><td class="tool-lbl">接力</td><td class="say">繼續描述</td></tr>
+          <tr><td class="bd">2NT</td><td></td><td></td><td class="say">6張 ♠ + 4張低花</td></tr>
+          <tr class="mark"><td></td><td class="bd">3<span class="s b">♣</span></td><td class="tool-lbl">Sidestep</td><td class="say">哪門低花？</td></tr>
+          <tr class="mark"><td class="bd">3<span class="s r">♥</span></td><td></td><td></td><td class="say">4張 <span class="s r">♦</span> — 問「哪一門」，<b>♣ 排第一級</b>，所以這是第二級</td></tr>
+          <tr class="mark"><td></td><td class="bd">3<span class="s b">♠</span></td><td class="tool-lbl">Sidestep</td><td class="say">剩下 <span class="s r">♥</span>（高）和 <span class="s b">♣</span>（低）怎麼分？</td></tr>
+          <tr><td class="bd">3NT</td><td></td><td></td><td class="say">6-1-4-2 — 牌型問完了</td></tr>
+          <tr class="mark"><td></td><td class="bd">4<span class="s b">♣</span></td><td class="tool-lbl">CRASH</td><td class="say">現在問 A</td></tr>
+          <tr class="mark"><td class="bd">5<span class="s b">♣</span></td><td></td><td></td><td class="say">加5級 ＝ 2個A，<span class="s b">♣</span>+<span class="s r">♥</span> 或 <span class="s r">♦</span>+<span class="s b">♠</span>（Shape 類）</td></tr>
+          <tr><td></td><td class="bd">6<span class="s b">♠</span></td><td></td><td class="say">數出來的，不是猜出來的</td></tr>
+        </tbody>
+      </table>
+      <div class="hand">
+        <span>西　<span class="s b">♠</span>A87632　<span class="s r">♥</span>4　<span class="s r">♦</span>AK105　<span class="s b">♣</span>Q8</span>
+        <span>東　<span class="s b">♠</span>KQJ4　<span class="s r">♥</span>AJ63　<span class="s r">♦</span>82　<span class="s b">♣</span>KJ2</span>
+      </div>
+    </div>
+
+    <div class="proof">
+      <b>東家怎麼數出 6♠：</b>他手上有 <span class="s r">♥</span>A，所以排除「圓組」→ 西家必是 <span class="s b">♠</span>A + <span class="s r">♦</span>A。
+      再算牌力：<span class="s b">♠</span>A<span class="s r">♦</span>A 只有 8 點，但西家承諾高限 14–15，缺的 6–7 點必然含 <span class="s r">♦</span>K。
+    </div>
+  </section>
+
+  <!-- ============ 干擾 ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>敵方干擾時</h2>
+      <span class="tag">第三章 · 接力不一定要放棄</span>
+    </div>
+
+    <div class="tool">
+      <div class="tool-body">
+        <dl class="facts">
+          <dt>基本準則</dt>
+          <dd>接力系統<strong>廢棄</strong>，改用自然叫。</dd>
+          <dt>例外</dt>
+          <dd>如果干擾發生在<strong>己方已經深入接力序列之後</strong>，接力繼續進行——但答叫階梯改成用「不叫」和「加倍」當作最低的兩級。</dd>
+        </dl>
+
+        <div class="grid2">
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>干擾下的答叫階梯</span><span class="dir">低 ↓ 高</span></div>
+            <ul class="ladder">
+              <li><span class="lv">加1級</span><span class="mn">不叫（Pass）</span></li>
+              <li><span class="lv">加2級</span><span class="mn">加倍或再加倍</span></li>
+              <li><span class="lv">加3級</span><span class="mn">在上一個花色叫品上加 1 級</span></li>
+              <li><span class="lv">加4級</span><span class="mn">在上一個花色叫品上加 2 級</span></li>
+              <li><span class="lv">加5級</span><span class="mn">在上一個花色叫品上加 3 級</span></li>
+              <li><span class="lv">…</span><span class="mn">依此類推</span></li>
+            </ul>
+          </div>
+          <div class="ladder-wrap">
+            <div class="ladder-cap"><span>實戰 · 歐錦賽 挪威 vs 土耳其</span></div>
+            <ul class="ladder withbid">
+              <li><span class="lv">加1級</span><span class="bd">Pass</span><span class="mn">1 或 4 個 K</span></li>
+              <li><span class="lv">加2級</span><span class="bd">RDBL</span><span class="mn">0 或 3 個 K</span></li>
+              <li><span class="lv">加3級</span><span class="bd">4NT</span><span class="mn">同色 2K</span></li>
+              <li><span class="lv">加4級</span><span class="bd">5<span class="s b">♣</span></span><span class="mn">高花或低花 2K</span></li>
+              <li><span class="lv">加5級</span><span class="bd">5<span class="s r">♦</span></span><span class="mn">2個K，<span class="s b">♣</span>+<span class="s r">♥</span> 或 <span class="s r">♦</span>+<span class="s b">♠</span></span></li>
+            </ul>
+            <div class="proof" style="margin-top:14px">
+              東家在北家 <span class="bid">4<span class="s b">♠</span></span>（CRASH）上加倍，Glenn 就用 <b>Pass</b> 當作「加1級」答出一個 K。
+              最後叫到 <span class="bid">6<span class="s r">♦</span></span>，1370 分，進帳 13 IMP。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 還缺什麼 ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>還沒涵蓋的</h2>
+      <span class="tag">其他章節</span>
+    </div>
+    <div class="gaps">
+      <p style="font-size:14px; color:var(--ink-2)">
+        本速查涵蓋<b>第三章</b>（正式定義與階梯）與<b>第五章</b>（一階高花開叫的實際套用）。以下需要其他章節：
+      </p>
+      <ul>
+        <li><b>超級接力</b>（第十章）— 第三章說 CRASH 是為了配合它才不採用羅馬關鍵張黑木，兩者結合才是完整的問叫工具</li>
+        <li><b>各開叫的實際階梯</b>— 第四章（1<span class="s r">♦</span>）、第六章（1NT）、第七章（1<span class="s b">♣</span>）、第八章（2<span class="s b">♣</span>）、第九章（2<span class="s r">♦</span>–4<span class="s b">♠</span>）各有自己塌縮過的階梯</li>
+        <li><b>基本滿貫叫牌技巧</b>（第二章）— 脫離接力後的自然叫與扣叫</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    整理自《北歐接力精確體系》第三章「北歐梅花的問叫和基本準則」與第五章「一階高花開叫及其發展」。<br>
+    兩章的原始資料在轉存為 Markdown 時都遺失了花色符號，本速查的所有叫品與階梯經 27 張截圖逐頁比對還原。
+  </footer>
+
+</div>
+
+</body>
+</html>

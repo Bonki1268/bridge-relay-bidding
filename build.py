@@ -456,7 +456,7 @@ def build_index():
 
 <div class="external-card">
   <p><strong>接力工具速查</strong> — 第三章五種問叫工具（Sidestep／Splinter／54Pick-up／Six-shooter／CRASH）的濃縮速查頁。</p>
-  <a href="../原始資料/北歐接力工具速查.html">開啟速查頁</a>
+  <a href="北歐接力工具速查.html">開啟速查頁</a>
 </div>
 """
     body += '<footer class="site-footer">整理自《北歐接力精確體系》。以上資料僅供個人叫牌系統學習與對照使用。</footer>'
@@ -473,7 +473,15 @@ def build_index():
 
 # --------------------------------------------------------------------------
 
+def copy_quickref():
+    src = os.path.join(SRC, "北歐接力工具速查.html")
+    dst = os.path.join(OUT, "北歐接力工具速查.html")
+    shutil.copyfile(src, dst)
+    print("copied", os.path.relpath(dst, ROOT))
+
+
 def main():
+    copy_quickref()
     build_index()
     build_xlsx_page("一方塊開叫.xlsx", "一方塊開叫", "叫序資料 · 一方塊開叫",
                      "1♦ 開叫、1♦–1♥ 接力主幹（A–J 分支）與非接力叫牌、示例牌張、示例叫序。")
