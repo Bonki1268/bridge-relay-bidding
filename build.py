@@ -525,8 +525,8 @@ def build_xlsx_page(xlsx_name, title, eyebrow, lede):
         crumb_html='<div class="crumb"><a href="../index.html">首頁</a> ／ 叫序資料 ／ %s</div>' % title,
     )
     body += '<section>'
-    body += '<div class="sheet-tabs" data-sheet-tabs="#%s-panels">%s</div>' % (xlsx_name, "".join(tabs))
-    body += '<div id="%s-panels">%s</div>' % (xlsx_name, "".join(panels))
+    body += '<div class="sheet-tabs" data-sheet-tabs="#%s-panels">%s</div>' % (title, "".join(tabs))
+    body += '<div id="%s-panels">%s</div>' % (title, "".join(panels))
     body += '</section>'
     body += '<footer class="site-footer">資料整理自《北歐接力精確體系》，原始表格見「原始書籍檔案」分頁。</footer>'
 
