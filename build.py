@@ -713,7 +713,7 @@ def build_index():
   <div class="card-grid">
     <a class="doc-card" href="原始書籍檔案/第三章.html">
       <div class="k">Chapter 03</div>
-      <h3>第三章：問叫與基本準則</h3>
+      <h3>問叫與基本準則</h3>
       <p>接力系統的正式定義：五種問叫工具與四條硬規則。</p>
     </a>
     <a class="doc-card" href="原始書籍檔案/一梅花開叫.html">
