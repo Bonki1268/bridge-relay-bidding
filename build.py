@@ -33,21 +33,12 @@ SUIT_BLACK = set("♠♣")
 # --------------------------------------------------------------------------
 
 NAV_ITEMS = [
-    ("叫序資料", [
-        ("一方塊開叫", "叫序資料/一方塊開叫.html"),
-        ("一梅花開叫", "叫序資料/一梅花開叫.html"),
-        ("二梅花開叫", "叫序資料/二梅花開叫.html"),
-        ("高花開叫", "叫序資料/高花開叫.html"),
-        ("一無王開叫", "叫序資料/一無王開叫.html"),
-    ]),
-    ("原始書籍檔案", [
-        ("第三章", "原始書籍檔案/第三章.html"),
-        ("一方塊開叫", "原始書籍檔案/一方塊開叫.html"),
-        ("高花開叫", "原始書籍檔案/高花開叫.html"),
-        ("一無王開叫", "原始書籍檔案/一無王開叫.html"),
-        ("一梅花開叫", "原始書籍檔案/一梅花開叫.html"),
-        ("二梅花開叫", "原始書籍檔案/二梅花開叫.html"),
-    ]),
+    ("基本準則", "原始書籍檔案/第三章.html"),
+    ("一梅花開叫", "叫序資料/一梅花開叫.html"),
+    ("一方塊開叫", "叫序資料/一方塊開叫.html"),
+    ("一高花開叫", "叫序資料/一高花開叫.html"),
+    ("一無王開叫", "叫序資料/一無王開叫.html"),
+    ("二梅花開叫", "叫序資料/二梅花開叫.html"),
 ]
 
 
@@ -75,15 +66,10 @@ def render_nav(root_prefix, current_href=None):
                   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
                   '<path d="M3 6h18M3 12h18M3 18h18"/></svg></button>')
     parts.append('<ul class="nav-links" role="menubar">')
-    for label, children in NAV_ITEMS:
-        parts.append('<li class="nav-item has-menu" role="none">')
-        parts.append('<button class="nav-link" type="button">%s <span class="car">▾</span></button>' % label)
-        parts.append('<ul class="nav-menu">')
-        for sub_label, sub_href in children:
-            active = " is-active" if sub_href == current_href else ""
-            parts.append('<li><a class="%s" href="%s%s">%s</a></li>' %
-                          (active.strip() or "", root_prefix + sub_href, "", sub_label))
-        parts.append('</ul></li>')
+    for label, href in NAV_ITEMS:
+        active = " is-active" if href == current_href else ""
+        parts.append('<li class="nav-item" role="none"><a class="nav-link%s" href="%s%s">%s</a></li>' %
+                      (active, root_prefix, href, label))
     parts.append('</ul>')
     parts.append('</div></nav>')
     return "".join(parts)
@@ -619,7 +605,7 @@ BOOK_DOCS = [
     ),
     dict(
         md_file="5高花開叫/高花開叫.md",
-        slug="高花開叫",
+        slug="一高花開叫",
         title="第五章 一階高花開叫及其發展",
         image_dir="高花開叫",
         lede="1♠／1♥ 開叫後的第一應叫與 1NT 後的接力主幹發展，含原始截圖對照還原。",
@@ -709,9 +695,9 @@ def build_index():
       <h3>二梅花開叫</h3>
       <p>2♣ 開叫、2♣–2♦ 接力主幹（A–D 分支）與示例牌張、示例叫序，共 9 個工作表。</p>
     </a>
-    <a class="doc-card" href="叫序資料/高花開叫.html">
+    <a class="doc-card" href="叫序資料/一高花開叫.html">
       <div class="k">Majors</div>
-      <h3>高花開叫</h3>
+      <h3>一高花開叫</h3>
       <p>一階高花開叫、1NT 後接力主幹與各分支，共 11 個工作表。</p>
     </a>
     <a class="doc-card" href="叫序資料/一無王開叫.html">
@@ -735,7 +721,7 @@ def build_index():
       <h3>一方塊開叫及其發展</h3>
       <p>1♦ 開叫的完整定義與接力叫牌發展。</p>
     </a>
-    <a class="doc-card" href="原始書籍檔案/高花開叫.html">
+    <a class="doc-card" href="原始書籍檔案/一高花開叫.html">
       <div class="k">Chapter 05</div>
       <h3>一階高花開叫及其發展</h3>
       <p>高花開叫的第一應叫與接力主幹發展。</p>
@@ -793,7 +779,7 @@ def main():
                      "1♣ 開叫後的應叫系統、1♦ 後開叫者再叫、1NT／2♣／2♦／2♥／2♠／2NT 各系統。")
     build_xlsx_page("二梅花開叫.xlsx", "二梅花開叫", "叫序資料 · 二梅花開叫",
                      "2♣ 開叫、2♣–2♦ 接力主幹（A–D 分支）與示例牌張、示例叫序。")
-    build_xlsx_page("高花開叫.xlsx", "高花開叫", "叫序資料 · 高花開叫",
+    build_xlsx_page("高花開叫.xlsx", "一高花開叫", "叫序資料 · 一高花開叫",
                      "一階高花開叫的第一應叫、1NT 後接力主幹（A–E 分支）與示例牌張、示例叫序。")
     build_xlsx_page("一無王開叫.xlsx", "一無王開叫", "叫序資料 · 一無王開叫",
                      "1NT 開叫後的第一應叫、2♦ 接力主幹（A–C 分支）、對 1NT 的防守與示例牌張、示例叫序。")

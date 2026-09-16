@@ -10,23 +10,6 @@
     });
   }
 
-  // 下拉選單（點擊切換，含桌機 hover 與行動點擊）
-  var items = document.querySelectorAll(".nav-item.has-menu");
-  items.forEach(function(item){
-    var link = item.querySelector(".nav-link");
-    link.addEventListener("click", function(e){
-      e.preventDefault();
-      var isOpen = item.classList.contains("open");
-      items.forEach(function(i){ i.classList.remove("open"); });
-      if (!isOpen) item.classList.add("open");
-    });
-  });
-  document.addEventListener("click", function(e){
-    if (!e.target.closest(".nav-item")) {
-      items.forEach(function(i){ i.classList.remove("open"); });
-    }
-  });
-
   // 叫序資料頁：工作表分頁籤
   var tabGroups = document.querySelectorAll("[data-sheet-tabs]");
   tabGroups.forEach(function(group){

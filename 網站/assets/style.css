@@ -88,19 +88,6 @@ a{color:var(--baize)}
   font-feature-settings:normal;
 }
 .nav-link:hover, .nav-link:focus-visible, .nav-link.is-active{color:var(--baize); background:var(--baize-soft)}
-.nav-link .car{font-size:9px; transition:transform .15s ease}
-.nav-item.open .nav-link .car{transform:rotate(180deg)}
-.nav-menu{
-  position:absolute; top:100%; left:0; min-width:220px;
-  background:var(--surface); border:1px solid var(--rule); box-shadow:var(--shadow);
-  padding:6px; margin:6px 0 0; list-style:none; z-index:20;
-}
-.nav-item:not(.open) .nav-menu{display:none}
-.nav-menu a{
-  display:block; padding:9px 12px; font-size:13.5px; color:var(--ink-2);
-  text-decoration:none; border-radius:3px;
-}
-.nav-menu a:hover, .nav-menu a.is-active{background:var(--baize-soft); color:var(--baize)}
 .nav-toggle{
   display:none; margin-left:auto; background:none; border:1px solid var(--rule);
   border-radius:4px; width:38px; height:34px; cursor:pointer; color:var(--ink);
@@ -120,9 +107,6 @@ a{color:var(--baize)}
   .site-nav{position:relative}
   .nav-item{width:100%}
   .nav-link{width:100%; justify-content:space-between}
-  .nav-menu{position:static; box-shadow:none; border:none; padding:0 0 0 14px; margin:0}
-  .nav-item:not(.open) .nav-menu{display:none}
-  .nav-item.open .nav-menu{display:block}
 }
 
 /* ============ 頁首 ============ */
