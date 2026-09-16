@@ -33,7 +33,7 @@ SUIT_BLACK = set("♠♣")
 # --------------------------------------------------------------------------
 
 NAV_ITEMS = [
-    ("基本準則", "原始書籍檔案/第三章.html"),
+    ("接力速查工具", "北歐接力工具速查.html"),
     ("一梅花開叫", "叫序資料/一梅花開叫.html"),
     ("一方塊開叫", "叫序資料/一方塊開叫.html"),
     ("一高花開叫", "叫序資料/一高花開叫.html"),
@@ -680,20 +680,15 @@ def build_index():
 <section>
   <div class="sec-head"><h2>叫序資料</h2><span class="tag">依開叫花色整理的接力叫序表</span></div>
   <div class="card-grid">
-    <a class="doc-card" href="叫序資料/一方塊開叫.html">
-      <div class="k">Diamonds</div>
-      <h3>一方塊開叫</h3>
-      <p>1♦ 開叫、1♦–1♥ 接力主幹與各分支發展，共 12 個工作表。</p>
-    </a>
     <a class="doc-card" href="叫序資料/一梅花開叫.html">
       <div class="k">Clubs</div>
       <h3>一梅花開叫</h3>
       <p>1♣ 開叫的應叫系統與各分支接力發展，共 13 個工作表。</p>
     </a>
-    <a class="doc-card" href="叫序資料/二梅花開叫.html">
-      <div class="k">Clubs II</div>
-      <h3>二梅花開叫</h3>
-      <p>2♣ 開叫、2♣–2♦ 接力主幹（A–D 分支）與示例牌張、示例叫序，共 9 個工作表。</p>
+    <a class="doc-card" href="叫序資料/一方塊開叫.html">
+      <div class="k">Diamonds</div>
+      <h3>一方塊開叫</h3>
+      <p>1♦ 開叫、1♦–1♥ 接力主幹與各分支發展，共 12 個工作表。</p>
     </a>
     <a class="doc-card" href="叫序資料/一高花開叫.html">
       <div class="k">Majors</div>
@@ -705,6 +700,11 @@ def build_index():
       <h3>一無王開叫</h3>
       <p>1NT 開叫的第一應叫、2♦ 接力主幹（A–C 分支）與對 1NT 的防守，共 9 個工作表。</p>
     </a>
+    <a class="doc-card" href="叫序資料/二梅花開叫.html">
+      <div class="k">Clubs II</div>
+      <h3>二梅花開叫</h3>
+      <p>2♣ 開叫、2♣–2♦ 接力主幹（A–D 分支）與示例牌張、示例叫序，共 9 個工作表。</p>
+    </a>
   </div>
 </section>
 
@@ -715,6 +715,11 @@ def build_index():
       <div class="k">Chapter 03</div>
       <h3>第三章：問叫與基本準則</h3>
       <p>接力系統的正式定義：五種問叫工具與四條硬規則。</p>
+    </a>
+    <a class="doc-card" href="原始書籍檔案/一梅花開叫.html">
+      <div class="k">Chapter 07</div>
+      <h3>一梅花開叫及其發展</h3>
+      <p>1♣ 開叫後的應叫系統與各分支接力發展。</p>
     </a>
     <a class="doc-card" href="原始書籍檔案/一方塊開叫.html">
       <div class="k">Chapter 04</div>
@@ -730,11 +735,6 @@ def build_index():
       <div class="k">Chapter 06</div>
       <h3>一無將開叫及其發展</h3>
       <p>1NT 開叫的完整定義與 2♦ 接力主幹發展。</p>
-    </a>
-    <a class="doc-card" href="原始書籍檔案/一梅花開叫.html">
-      <div class="k">Chapter 07</div>
-      <h3>一梅花開叫及其發展</h3>
-      <p>1♣ 開叫後的應叫系統與各分支接力發展。</p>
     </a>
     <a class="doc-card" href="原始書籍檔案/二梅花開叫.html">
       <div class="k">Chapter 08</div>
