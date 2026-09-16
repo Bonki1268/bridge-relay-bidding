@@ -5,8 +5,9 @@
 
 ## 1. 專案是什麼
 
-把《北歐接力精確體系》一書的三份 Excel 叫序表（一方塊／一梅花／高花開叫）與
-五篇書籍章節 Markdown，轉成一個純靜態、有 RWD 的網站，部署在 GitHub Pages。
+把《北歐接力精確體系》一書的五份 Excel 叫序表（一方塊／一梅花／二梅花／高花／
+一無王開叫）與六篇書籍章節 Markdown，轉成一個純靜態、有 RWD 的網站，部署在
+GitHub Pages。
 
 **這不是手寫的網站。** 唯一該手動編輯的是 `原始資料/` 底下的來源檔案；
 `網站/` 整個資料夾都是 `build.py` 的產出物，會被覆寫，不要手改裡面的 `.html`。
@@ -32,20 +33,23 @@
 ├── ARCHITECTURE.md               ← 本文件
 ├── .github/workflows/pages.yml   ← 推送到 main 就自動部署 Pages
 ├── 原始資料/                     ← Source of truth，手動維護
-│   ├── 一方塊開叫.xlsx / 一梅花開叫.xlsx / 高花開叫.xlsx
+│   ├── 一方塊開叫.xlsx / 一梅花開叫.xlsx / 二梅花開叫.xlsx / 高花開叫.xlsx /
+│   │   一無王開叫.xlsx
 │   ├── 北歐接力工具速查.html      ← 獨立手寫頁面（非 build.py 產生，只被複製）
 │   ├── 3基本準則/第三章.md + 1.png…13.png
 │   ├── 4一方塊開叫/一方塊開叫.md + 1.png…13.png
 │   ├── 5高花開叫/高花開叫.md + 1.png…14.png
+│   ├── 6一無王開叫/一無王開叫.md + 1.png…6.png
 │   ├── 7一梅花開叫/一梅花開叫.md + 1.png…12.png
 │   └── 8二梅花開叫/二梅花開叫.md + 1.png…5.png
 └── 網站/                         ← build.py 的輸出，會被整批覆寫
     ├── index.html
     ├── 北歐接力工具速查.html      ← copy_quickref() 從原始資料複製過來的
     ├── assets/style.css, site.js, images/<章節>/*.png
-    ├── 叫序資料/一方塊開叫.html, 一梅花開叫.html, 高花開叫.html
+    ├── 叫序資料/一方塊開叫.html, 一梅花開叫.html, 二梅花開叫.html,
+    │             高花開叫.html, 一無王開叫.html
     └── 原始書籍檔案/第三章.html, 一方塊開叫.html, 高花開叫.html,
-                          一梅花開叫.html, 二梅花開叫.html
+                          一無王開叫.html, 一梅花開叫.html, 二梅花開叫.html
 ```
 
 ## 3. `build.py` 總覽
@@ -182,7 +186,7 @@ RWD：`.wrap` 限制最大寬度，`.table-scroll` 包住所有表格讓寬表�
 3. `colorize_suits_html()` 幫花色符號上色（原理同 4.4 節，先切標籤再處理文字，
    避免污染 `alt=` 屬性——這是實際爆炸過的 bug，別再犯）
 
-`BOOK_DOCS`（第 602 行）是五篇文章的清單（來源路徑、標題、圖片資料夾、
+`BOOK_DOCS`（第 605 行）是六篇文章的清單（來源路徑、標題、圖片資料夾、
 簡介），新增文章從這裡加一筆。
 
 ## 7. 維護 SOP
