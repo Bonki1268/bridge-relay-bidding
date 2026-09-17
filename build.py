@@ -254,11 +254,40 @@ def linkify_refs(raw, num_to_index, merged_indices, current_code):
     return REF_RE.sub(repl, raw)
 
 
+QUICKREF_HREF = "../北歐接力工具速查.html"
+
+TOOL_ANCHORS = {
+    "54Pick-up": "tool-54pickup",
+    "'54Pick-up": "tool-54pickup",
+    "Six-shooter": "tool-six-shooter",
+    "Splinter-relay": "tool-splinter",
+    "Splinter": "tool-splinter",
+    "Sidestep": "tool-sidestep",
+    "CRASH": "tool-crash",
+}
+TOOL_LINK_RE = re.compile(
+    "|".join(re.escape(k) for k in sorted(TOOL_ANCHORS, key=len, reverse=True))
+)
+
+
+def linkify_tools(raw):
+    """把接力工具名稱（Sidestep／Splinter／54Pick-up／Six-shooter／CRASH）
+    連到「接力工具速查」頁對應章節的錨點。"""
+
+    def repl(m):
+        text = m.group(0)
+        return '<a class="tool-link" href="%s#%s">%s</a>' % (
+            QUICKREF_HREF, TOOL_ANCHORS[text], text)
+
+    return TOOL_LINK_RE.sub(repl, raw)
+
+
 def render_cell(raw, num_to_index, merged_indices, current_code=None):
     """統一的儲存格內容渲染：跳轉連結 → 花色上色／逃逸 → 叫品 mono 樣式。"""
     if raw is None:
         raw = ""
     linked = linkify_refs(raw, num_to_index, merged_indices, current_code)
+    linked = linkify_tools(linked)
     parts = re.split(r"(<[^>]+>)", linked)
     out = []
     for part in parts:

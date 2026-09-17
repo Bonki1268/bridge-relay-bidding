@@ -226,6 +226,13 @@ table.bidtbl tr.subhead td{
 }
 .jump-link:hover{text-decoration-color:var(--baize)}
 
+/* 接力工具名稱連結（→ 接力速查工具頁對應章節） */
+.tool-link{
+  color:var(--baize); text-decoration:underline; text-decoration-color:var(--rule-soft);
+  text-underline-offset:2px; font-weight:600;
+}
+.tool-link:hover{text-decoration-color:var(--baize)}
+
 /* 合併分支表（如 F-J分支）：拆成獨立子區塊 */
 .branch-group{margin:0 0 28px}
 .branch-group:last-child{margin-bottom:0}
