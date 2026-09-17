@@ -255,6 +255,12 @@ cp 原始資料/<N章節資料夾>/*.png 網站/assets/images/<image_dir>/
 4. **Excel 鎖定檔 `~$*.xlsx`**：開著 Excel 編輯來源檔案時會產生暫存鎖定檔，
    已加進 `.gitignore`（`~$*.xlsx`），不要手動 commit 它。
 
+5. **`原始資料/北歐接力工具速查.html` 的導覽列是手動複製貼上的，不會跟著
+   `build.py` 的 `NAV_ITEMS` 自動同步。** 這頁本身不是 `build.py` 產生的
+   （見第 2 節），所以它的 `<nav class="site-nav">` 標記與對應 CSS 是直接
+   寫死在這個檔案的 `<style>` 裡。**改 `NAV_ITEMS`（新增／改名／改順序章節）
+   時，記得手動同步改這裡的導覽列，否則這頁的導覽會跟其他頁面不一致。**
+
 ## 9. 部署架構
 
 - GitHub repo：`https://github.com/Bonki1268/bridge-relay-bidding`（public，

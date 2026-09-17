@@ -198,9 +198,51 @@
 
   footer{margin-top:56px; padding-top:20px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink-3); line-height:1.8}
   :focus-visible{outline:2px solid var(--baize); outline-offset:3px}
+
+  /* ============ 頂部導覽（與 build.py 的 NAV_ITEMS 手動同步，這頁不是 build.py 產生的） ============ */
+  .site-nav{border-bottom:2px solid var(--ink); background:var(--surface)}
+  .nav-inner{
+    max-width:1000px; margin:0 auto; padding:0 20px;
+    display:flex; align-items:center; gap:8px; min-height:60px;
+  }
+  .nav-brand{
+    font-family:var(--serif); font-weight:700; font-size:17px; color:var(--ink);
+    text-decoration:none; white-space:nowrap; margin-right:auto;
+  }
+  .nav-brand:hover{color:var(--baize)}
+  .nav-links{display:flex; align-items:center; gap:2px; list-style:none; margin:0; padding:0}
+  .nav-item{position:relative}
+  .nav-link{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:var(--mono); font-size:12.5px; font-weight:700;
+    letter-spacing:.04em; color:var(--ink-2); text-decoration:none;
+    padding:10px 12px; border-radius:4px; background:none; border:none; cursor:pointer;
+  }
+  .nav-link:hover, .nav-link:focus-visible, .nav-link.is-active{color:var(--baize); background:var(--baize-soft)}
+  .nav-toggle{
+    display:none; margin-left:auto; background:none; border:1px solid var(--rule);
+    border-radius:4px; width:38px; height:34px; cursor:pointer; color:var(--ink);
+    align-items:center; justify-content:center;
+  }
+  .nav-toggle svg{width:18px; height:18px}
+  @media (max-width:760px){
+    .nav-toggle{display:flex}
+    .nav-links{
+      display:none; position:absolute; top:60px; left:0; right:0;
+      flex-direction:column; align-items:stretch; gap:0;
+      background:var(--surface); border-bottom:1px solid var(--rule); box-shadow:var(--shadow);
+      padding:8px 12px 14px;
+    }
+    .site-nav.menu-open .nav-links{display:flex}
+    .site-nav{position:relative}
+    .nav-item{width:100%}
+    .nav-link{width:100%; justify-content:space-between}
+  }
 </style>
 </head>
 <body>
+
+<nav class="site-nav"><div class="nav-inner"><a class="nav-brand" href="index.html">北歐接力精確體系</a><button class="nav-toggle" aria-label="開啟選單" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><ul class="nav-links" role="menubar"><li class="nav-item" role="none"><a class="nav-link is-active" href="北歐接力工具速查.html">接力速查工具</a></li><li class="nav-item" role="none"><a class="nav-link" href="叫序資料/一梅花開叫.html">一梅花開叫</a></li><li class="nav-item" role="none"><a class="nav-link" href="叫序資料/一方塊開叫.html">一方塊開叫</a></li><li class="nav-item" role="none"><a class="nav-link" href="叫序資料/一高花開叫.html">一高花開叫</a></li><li class="nav-item" role="none"><a class="nav-link" href="叫序資料/一無王開叫.html">一無王開叫</a></li><li class="nav-item" role="none"><a class="nav-link" href="叫序資料/二梅花開叫.html">二梅花開叫</a></li></ul></div></nav>
 
 <div class="wrap">
 
@@ -728,5 +770,6 @@
 
 </div>
 
+<script src="assets/site.js"></script>
 </body>
 </html>
