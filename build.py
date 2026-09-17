@@ -323,7 +323,41 @@ def render_footnotes(footnotes, num_to_index, merged_indices):
     return '<div class="trap">%s</div>' % "<br>".join(lines)
 
 
-def render_ladder(analysis, num_to_index, merged_indices):
+PARENT_ROW_RE = re.compile(r"^▸\s*")
+CHILD_ROW_RE = re.compile(r"^　+")
+CHILD_NOTE_RE = re.compile(r"^(以下\s*\d+\s*列為子接力|細分見下\s*[一二兩三四五六七八九十\d]*\s*列)$")
+
+
+def render_ladder_row(vals, n, code_col, num_to_index, merged_indices, toggle_group=None, child_of=None):
+    """渲染單一列 <tr>。toggle_group：這列是子接力的父列，附上展開／收合按鈕。
+    child_of：這列是子接力，預設收合、與父列共用同一個 group 供 JS 對應。"""
+    current_code = extract_branch_code(vals[0])
+    tds = []
+    for ci, raw in enumerate(vals):
+        if ci == 0 and code_col:
+            content = ('<span class="code-badge">%s</span>' % html.escape(raw.strip())
+                        if raw.strip() else "&nbsp;")
+        elif ci == 0 and current_code and len(raw.strip()) > 1:
+            rest = raw.strip()[1:].strip()
+            content = '<span class="code-badge">%s</span> %s' % (
+                html.escape(current_code), render_cell(rest, num_to_index, merged_indices, current_code))
+        else:
+            content = render_cell(raw, num_to_index, merged_indices, current_code)
+        if ci == 0 and toggle_group:
+            content = ('<button class="ladder-toggle" type="button" aria-expanded="false">'
+                       '<span class="tri">▸</span></button>%s' % content)
+        if not content:
+            content = "&nbsp;"
+        cls = ' class="cell-muted"' if ci == n - 1 else ""
+        tds.append("<td%s>%s</td>" % (cls, content))
+    if toggle_group:
+        return '<tr class="ladder-parent" data-group="%s">%s</tr>' % (toggle_group, "".join(tds))
+    if child_of:
+        return '<tr class="ladder-child" data-group="%s" hidden>%s</tr>' % (child_of, "".join(tds))
+    return "<tr>%s</tr>" % "".join(tds)
+
+
+def render_ladder(analysis, sheet_index, num_to_index, merged_indices):
     header = analysis["header"]
     n = len(header)
     code_col = bool(header) and header[0] == "代號"
@@ -331,29 +365,41 @@ def render_ladder(analysis, num_to_index, merged_indices):
     parts = [render_lead_block(analysis["leading"], num_to_index, merged_indices)]
     ths = "".join("<th>%s</th>" % html.escape(h) for h in header)
     trs = []
-    for kind, payload in analysis["rows"]:
+    rows = analysis["rows"]
+    group_seq = 0
+    i = 0
+    while i < len(rows):
+        kind, payload = rows[i]
         if kind == "SUB":
             trs.append('<tr class="subhead"><td colspan="%d">%s</td></tr>' %
                         (n, render_cell(payload, num_to_index, merged_indices)))
+            i += 1
             continue
+
         vals = (payload + [""] * n)[:n]
-        current_code = extract_branch_code(vals[0])
-        tds = []
-        for ci, raw in enumerate(vals):
-            if ci == 0 and code_col:
-                content = ('<span class="code-badge">%s</span>' % html.escape(raw.strip())
-                            if raw.strip() else "&nbsp;")
-            elif ci == 0 and current_code and len(raw.strip()) > 1:
-                rest = raw.strip()[1:].strip()
-                content = '<span class="code-badge">%s</span> %s' % (
-                    html.escape(current_code), render_cell(rest, num_to_index, merged_indices, current_code))
-            else:
-                content = render_cell(raw, num_to_index, merged_indices, current_code)
-            if not content:
-                content = "&nbsp;"
-            cls = ' class="cell-muted"' if ci == n - 1 else ""
-            tds.append("<td%s>%s</td>" % (cls, content))
-        trs.append("<tr>%s</tr>" % "".join(tds))
+        children = []
+        j = i + 1
+        while j < len(rows) and rows[j][0] == "DATA":
+            cvals = (rows[j][1] + [""] * n)[:n]
+            if not CHILD_ROW_RE.match(cvals[0]):
+                break
+            children.append(cvals)
+            j += 1
+
+        if children:
+            group_seq += 1
+            group = "ladder-group-%d-%d" % (sheet_index + 1, group_seq)
+            vals[0] = PARENT_ROW_RE.sub("", vals[0])
+            if CHILD_NOTE_RE.match(vals[-1].strip()):
+                vals[-1] = ""
+            trs.append(render_ladder_row(vals, n, code_col, num_to_index, merged_indices, toggle_group=group))
+            for cvals in children:
+                cvals[0] = CHILD_ROW_RE.sub("", cvals[0])
+                trs.append(render_ladder_row(cvals, n, code_col, num_to_index, merged_indices, child_of=group))
+            i = j
+        else:
+            trs.append(render_ladder_row(vals, n, code_col, num_to_index, merged_indices))
+            i += 1
 
     parts.append('<div class="table-scroll"><table class="bidtbl"><thead><tr>%s</tr></thead>'
                   '<tbody>%s</tbody></table></div>' % (ths, "".join(trs)))
@@ -511,7 +557,7 @@ def render_sheet_panel(analysis, sheet_index, num_to_index, merged_indices):
         return render_hands(analysis, num_to_index, merged_indices)
     if header[:1] == ("例號",) and "叫者" in header:
         return render_auction(analysis, num_to_index, merged_indices)
-    return render_ladder(analysis, num_to_index, merged_indices)
+    return render_ladder(analysis, sheet_index, num_to_index, merged_indices)
 
 
 def build_xlsx_page(xlsx_name, title, eyebrow, lede):

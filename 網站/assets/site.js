@@ -27,6 +27,18 @@
     });
   });
 
+  // 叫序資料頁：巢狀子接力展開／收合
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest(".ladder-toggle");
+    if (!btn) return;
+    var group = btn.closest("tr").getAttribute("data-group");
+    var expanded = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", String(!expanded));
+    document.querySelectorAll('.ladder-child[data-group="' + group + '"]').forEach(function(tr){
+      tr.hidden = expanded;
+    });
+  });
+
   // 叫序資料頁：分支跳轉連結（切換到目標分頁籤，並捲動到對應分支）
   document.addEventListener("click", function(e){
     var link = e.target.closest(".jump-link");

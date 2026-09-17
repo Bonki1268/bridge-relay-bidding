@@ -219,6 +219,17 @@ table.bidtbl tr.subhead td{
   padding:9px 14px; border-bottom:1px solid var(--rule);
 }
 
+/* 巢狀子接力：展開／收合 */
+.ladder-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:16px; height:16px; margin-right:2px; padding:0; vertical-align:middle;
+  border:none; background:none; color:var(--brass); cursor:pointer;
+}
+.ladder-toggle .tri{display:inline-block; font-size:10px; transition:transform .15s ease}
+.ladder-toggle[aria-expanded="true"] .tri{transform:rotate(90deg)}
+table.bidtbl tr.ladder-child td{background:var(--brass-soft)}
+table.bidtbl tr.ladder-child td:first-child{border-left:3px solid var(--brass); padding-left:11px}
+
 /* 跳轉連結（→ 表4「A分支」／見表 9） */
 .jump-link{
   color:var(--baize); text-decoration:underline; text-decoration-color:var(--rule-soft);
