@@ -515,9 +515,12 @@ def render_sheet_panel(analysis, sheet_index, num_to_index, merged_indices):
 
 
 def build_xlsx_page(xlsx_name, title, eyebrow, lede):
-    path = os.path.join(SRC, xlsx_name)
-    wb = openpyxl.load_workbook(path, data_only=True)
-    sheets = wb.worksheets
+    xlsx_names = [xlsx_name] if isinstance(xlsx_name, str) else xlsx_name
+
+    sheets = []
+    for name in xlsx_names:
+        wb = openpyxl.load_workbook(os.path.join(SRC, name), data_only=True)
+        sheets.extend(wb.worksheets)
 
     analyses = [analyze_sheet(ws) for ws in sheets]
     num_to_index = {}
@@ -539,7 +542,7 @@ def build_xlsx_page(xlsx_name, title, eyebrow, lede):
 
     body = page_head(
         eyebrow, title,
-        ["%d 個工作表" % len(sheets), "來源：%s" % xlsx_name],
+        ["%d 個工作表" % len(sheets), "來源：%s" % "、".join(xlsx_names)],
         lede,
         crumb_html='<div class="crumb"><a href="../index.html">首頁</a> ／ 叫序資料 ／ %s</div>' % title,
     )
@@ -712,7 +715,7 @@ def build_index():
     <a class="doc-card" href="叫序資料/一梅花開叫.html">
       <div class="k">Clubs</div>
       <h3>一梅花開叫</h3>
-      <p>1♣ 開叫的應叫系統與各分支接力發展，共 13 個工作表。</p>
+      <p>1♣ 開叫的應叫系統與各分支接力發展，含被插叫因應叫牌，共 18 個工作表。</p>
     </a>
     <a class="doc-card" href="叫序資料/一方塊開叫.html">
       <div class="k">Diamonds</div>
@@ -804,8 +807,9 @@ def main():
     build_index()
     build_xlsx_page("一方塊開叫.xlsx", "一方塊開叫", "叫序資料 · 一方塊開叫",
                      "1♦ 開叫、1♦–1♥ 接力主幹（A–J 分支）與非接力叫牌、示例牌張、示例叫序。")
-    build_xlsx_page("一梅花開叫.xlsx", "一梅花開叫", "叫序資料 · 一梅花開叫",
-                     "1♣ 開叫後的應叫系統、1♦ 後開叫者再叫、1NT／2♣／2♦／2♥／2♠／2NT 各系統。")
+    build_xlsx_page(["一梅花開叫.xlsx", "一梅花被插叫.xlsx"], "一梅花開叫", "叫序資料 · 一梅花開叫",
+                     "1♣ 開叫後的應叫系統、1♦ 後開叫者再叫、1NT／2♣／2♦／2♥／2♠／2NT 各系統，"
+                     "以及 1♣ 被敵方賭倍／插叫干擾後的因應叫牌。")
     build_xlsx_page("二梅花開叫.xlsx", "二梅花開叫", "叫序資料 · 二梅花開叫",
                      "2♣ 開叫、2♣–2♦ 接力主幹（A–D 分支）與示例牌張、示例叫序。")
     build_xlsx_page("高花開叫.xlsx", "一高花開叫", "叫序資料 · 一高花開叫",
