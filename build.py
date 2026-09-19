@@ -761,12 +761,12 @@ def build_index():
     <a class="doc-card" href="叫序資料/一梅花開叫.html">
       <div class="k">Clubs</div>
       <h3>一梅花開叫</h3>
-      <p>1♣ 開叫的應叫系統與各分支接力發展，含被插叫因應叫牌，共 18 個工作表。</p>
+      <p>1♣ 開叫的應叫系統與各分支接力發展，含被插叫因應叫牌，共 19 個工作表。</p>
     </a>
     <a class="doc-card" href="叫序資料/一方塊開叫.html">
       <div class="k">Diamonds</div>
       <h3>一方塊開叫</h3>
-      <p>1♦ 開叫、1♦–1♥ 接力主幹與各分支發展，共 12 個工作表。</p>
+      <p>1♦ 開叫、1♦–1♥ 接力主幹與各分支發展，共 13 個工作表。</p>
     </a>
     <a class="doc-card" href="叫序資料/一高花開叫.html">
       <div class="k">Majors</div>
